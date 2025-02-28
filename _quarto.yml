@@ -7,7 +7,9 @@ format:
     theme: simple
     footer: "Duke University - Department of Statistical Science"
     logo: images/logo_hollyc.svg
-    transition: slide
+    transition: convex
+    code-overflow: wrap
+    code-line-numbers: true
 
 
 

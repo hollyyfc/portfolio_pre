@@ -6,8 +6,185 @@ format: revealjs
 editor: visual
 ---
 
-# Slide 1
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+library(lme4u)
+library(lme4)
+library(tidyverse)
+```
 
-...
+# Introduction
 
-## 1.1
+## Mixed-Effects Modeling
+
+Analyze data where observations are structured within groups, with fixed and random effects. 
+
+<br>
+
+```{r, eval=FALSE, echo=TRUE, class = "fragment"}
+lm(Score ~ Instruction, data = mydata)
+```
+
+<br>
+
+```{r, eval=FALSE, echo=TRUE, class = "fragment"}
+lme4::lmer(Score ~ Instruction + (1 | School), data = mydata)
+```
+
+<br>
+
+```{r, eval=FALSE, echo=TRUE, class = "fragment"}
+lme4::glmer(Score ~ Instruction + (1 | School), family = binomial(link = "logit"), data = mydata)
+```
+
+## Why `lme4u`?
+
+- **Interprets mixed-effects models**: provides user-friendly interpretations for fixed and random effects.
+- **Assumption diagnostics**: automates residual analysis and visualizations for heterogeneity checks.
+- **Hypothesis Testing**: facilitates hypothesis testing specific to mixed structure.
+- **Example Data**: offers a cleaned dataset curated for the purpose of mixed-effect modeling.
+
+# Data
+
+A brand new dataset for mixed-effect modeling
+
+## `star`
+
+A cleaned subset of the Project [STAR](https://search.r-project.org/CRAN/refmans/AER/html/STAR.html) (student-teacher achievement ratio) dataset.
+
+```{r, echo=TRUE}
+glimpse(star)
+```
+
+# Objective and Modeling
+
+## Question we ask ...
+
+::: {style="font-size: 70%;"}
+> _Does class size impact students' math test performance, and how does this effect vary across schools?_
+
+:::
+
+$$
+\scriptsize \text{MathScore}_{ij} = \beta_0 + \beta_1(\text{ClassType}_{ij}) + b_{0j} + b_{1j}(\text{ClassType}_{ij}) + \epsilon_{ij}
+$$
+
+- $\tiny i \text{ indexes students},\ j \text{ indexes schools.}$
+- $\tiny \beta_0, \beta_1 \text{ are fixed intercept and slope.}$
+- $\tiny b_{0j} \sim N(0, \tau^2_{b0}) \text{ is a random intercept for each school.}$
+- $\tiny b_{1j} \sim N(0, \tau^2_{b1}) \text{ is a random slope for ClassType in each school.}$
+- $\tiny \epsilon_{ij} \sim N(0, \sigma^2_{\epsilon}) \text{ is the residual error (within-school heterogeneity).}$
+
+## Modeling
+
+In R using `lme4`, this would be implemented as:
+
+```{r, echo=TRUE}
+lme4::lmer(math ~ cltype + (cltype | school_id), data = star)
+```
+
+# Package Features
+
+<br>
+
+```{r, eval=FALSE, echo=TRUE}
+# Installation 
+devtools::install_github("hollyyfc/lme4u")
+library(lme4u)
+```
+
+ 
+## <span style="font-size: 55px;">`explain_lmer(model, details)`</span>
+
+<br>
+
+::: {style="border: 2px solid black; padding: 10px; background-color: #ececec; font-size: 30px"}
+✨ A core component of the package, which provides structured, user-friendly interpretations of linear mixed-effects models fitted using `lme4::lmer()`; supports three levels of interpretation via the `details` argument.
+:::
+
+<br>
+
+To use this function, first do:
+```{r, message=FALSE, echo=TRUE}
+model <- lme4::lmer(math ~ cltype + math_old + (cltype | school_id), data = star)
+```
+
+## <span style="font-size: 55px;">"general"</span>
+
+::: {style="font-size: 30px"}
+Default for `details` argument, which provides a high-level summary of the model, describing its structure, fixed effects, and random effects in a concise yet informative manner:
+:::
+
+<div style="margin-top: 20px;"></div>
+
+```{r, echo=TRUE}
+explain_lmer(model)
+```
+
+## <span style="font-size: 55px;">"fixed"</span>
+
+::: {style="font-size: 30px"}
+A detailed explanation of the fixed effects, including interpretations of individual estimates and their implications within the model context:
+:::
+
+<div style="margin-top: 20px;"></div>
+
+```{r, echo=TRUE}
+fix <- explain_lmer(model, "fixed")
+```
+
+---
+
+```{r, echo=TRUE}
+attr(fix, "fixed_details")
+```
+
+::: callout-tip
+## Note
+
+If interaction is fitted to the model, the function is also able to detect and adjust the interpretation based on the interaction structure. 
+:::
+
+## <span style="font-size: 55px;">"random"</span>
+
+::: {style="font-size: 30px"}
+A detailed explanation of random intercepts, slopes, and variance components to highlight across-group variability:
+:::
+
+<div style="margin-top: 20px;"></div>
+
+```{r, echo=TRUE, message=FALSE}
+# Nested-grouping example
+model_nest <- lmer(math ~ cltype + math_old + (1|system_id) + (1|system_id:school_id), data = star)
+random_nest <- explain_lmer(model_nest, "random")
+```
+
+---
+
+```{r, echo=TRUE}
+attr(random_nest, "var_details")
+```
+
+::: callout-tip
+## Note
+
+The "random" part is also capable of detecting uncorrelated random effects and multiple (>= 3) random terms.
+:::
+
+
+## (More functions to be added ...)
+
+
+
+# Future Work
+
+## (TBD)
+
+## Explore `lme4u`
+
+(Embed final vignettes / website)
+
+
+
+
+
+

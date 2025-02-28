@@ -1,9 +1,86 @@
 [
   {
-    "objectID": "index.html#section",
-    "href": "index.html#section",
+    "objectID": "index.html#mixed-effects-modeling",
+    "href": "index.html#mixed-effects-modeling",
     "title": "lme4u: An R Package",
-    "section": "1.1",
-    "text": "1.1\n\n\n\n\nDuke University - Department of Statistical Science"
+    "section": "Mixed-Effects Modeling",
+    "text": "Mixed-Effects Modeling\nAnalyze data where observations are structured within groups, with fixed and random effects.\n\n\nlm(Score ~ Instruction, data = mydata)\n\n\n\nlme4::lmer(Score ~ Instruction + (1 | School), data = mydata)\n\n\n\nlme4::glmer(Score ~ Instruction + (1 | School), family = binomial(link = \"logit\"), data = mydata)"
+  },
+  {
+    "objectID": "index.html#why-lme4u",
+    "href": "index.html#why-lme4u",
+    "title": "lme4u: An R Package",
+    "section": "Why lme4u?",
+    "text": "Why lme4u?\n\nInterprets mixed-effects models: provides user-friendly interpretations for fixed and random effects.\nAssumption diagnostics: automates residual analysis and visualizations for heterogeneity checks.\nHypothesis Testing: facilitates hypothesis testing specific to mixed structure.\nExample Data: offers a cleaned dataset curated for the purpose of mixed-effect modeling."
+  },
+  {
+    "objectID": "index.html#star",
+    "href": "index.html#star",
+    "title": "lme4u: An R Package",
+    "section": "star",
+    "text": "star\nA cleaned subset of the Project STAR (student-teacher achievement ratio) dataset.\n\nglimpse(star)\n\nRows: 4,192\nColumns: 13\n$ school_id &lt;fct&gt; 63, 20, 5, 50, 69, 79, 5, 41, 19, 78, 11, 66, 38, 69, 43, 52…\n$ system_id &lt;fct&gt; 30, 11, 4, 21, 35, 41, 4, 17, 11, 41, 8, 32, 14, 35, 18, 22,…\n$ sctype    &lt;fct&gt; rural, suburban, rural, rural, rural, rural, rural, suburban…\n$ gender    &lt;fct&gt; female, female, female, male, male, male, male, female, fema…\n$ ethnicity &lt;fct&gt; cauc, afam, cauc, cauc, cauc, cauc, cauc, cauc, afam, cauc, …\n$ cltype    &lt;fct&gt; small, regular+aide, regular+aide, regular, regular, small, …\n$ tdegree   &lt;fct&gt; bachelor, bachelor, bachelor, master, bachelor, bachelor, ba…\n$ tyear     &lt;int&gt; 1, 4, 23, 8, 7, 14, 8, 19, 26, 13, 14, 24, 3, 12, 6, 15, 9, …\n$ lunch     &lt;fct&gt; free, non-free, non-free, non-free, non-free, free, free, no…\n$ read_old  &lt;int&gt; 568, 588, 573, 596, 614, 608, 608, 586, 520, 596, 569, 608, …\n$ read      &lt;int&gt; 587, 644, 599, 626, 641, 665, 597, 606, 578, 606, 606, 654, …\n$ math_old  &lt;int&gt; 579, 579, 550, 590, 639, 603, 579, 603, 540, 587, 584, 546, …\n$ math      &lt;int&gt; 593, 639, 583, 618, 684, 648, 589, 631, 606, 667, 596, 606, …"
+  },
+  {
+    "objectID": "index.html#question-we-ask",
+    "href": "index.html#question-we-ask",
+    "title": "lme4u: An R Package",
+    "section": "Question we ask …",
+    "text": "Question we ask …\n\n\nDoes class size impact students’ math test performance, and how does this effect vary across schools?\n\n\n\\[\n\\scriptsize \\text{MathScore}_{ij} = \\beta_0 + \\beta_1(\\text{ClassType}_{ij}) + b_{0j} + b_{1j}(\\text{ClassType}_{ij}) + \\epsilon_{ij}\n\\]\n\n\\(\\tiny i \\text{ indexes students},\\ j \\text{ indexes schools.}\\)\n\\(\\tiny \\beta_0, \\beta_1 \\text{ are fixed intercept and slope.}\\)\n\\(\\tiny b_{0j} \\sim N(0, \\tau^2_{b0}) \\text{ is a random intercept for each school.}\\)\n\\(\\tiny b_{1j} \\sim N(0, \\tau^2_{b1}) \\text{ is a random slope for ClassType in each school.}\\)\n\\(\\tiny \\epsilon_{ij} \\sim N(0, \\sigma^2_{\\epsilon}) \\text{ is the residual error (within-school heterogeneity).}\\)"
+  },
+  {
+    "objectID": "index.html#modeling",
+    "href": "index.html#modeling",
+    "title": "lme4u: An R Package",
+    "section": "Modeling",
+    "text": "Modeling\nIn R using lme4, this would be implemented as:\n\nlme4::lmer(math ~ cltype + (cltype | school_id), data = star)\n\nLinear mixed model fit by REML ['lmerMod']\nFormula: math ~ cltype + (cltype | school_id)\n   Data: star\nREML criterion at convergence: 42038.38\nRandom effects:\n Groups    Name               Std.Dev. Corr       \n school_id (Intercept)        20.63               \n           cltypesmall        13.68    -0.46      \n           cltyperegular+aide 16.68    -0.44  0.43\n Residual                     35.06               \nNumber of obs: 4192, groups:  school_id, 71\nFixed Effects:\n       (Intercept)         cltypesmall  cltyperegular+aide  \n         619.03624             4.84399            -0.09849"
+  },
+  {
+    "objectID": "index.html#explain_lmermodel-details",
+    "href": "index.html#explain_lmermodel-details",
+    "title": "lme4u: An R Package",
+    "section": "explain_lmer(model, details)",
+    "text": "explain_lmer(model, details)\n\n\n✨ A core component of the package, which provides structured, user-friendly interpretations of linear mixed-effects models fitted using lme4::lmer(); supports three levels of interpretation via the details argument.\n\n\nTo use this function, first do:\n\nmodel &lt;- lme4::lmer(math ~ cltype + math_old + (cltype | school_id), data = star)"
+  },
+  {
+    "objectID": "index.html#general",
+    "href": "index.html#general",
+    "title": "lme4u: An R Package",
+    "section": "“general”",
+    "text": "“general”\n\nDefault for details argument, which provides a high-level summary of the model, describing its structure, fixed effects, and random effects in a concise yet informative manner:\n\n\n\n\n\nexplain_lmer(model)\n\nThis linear mixed-effects model examines how cltype, math_old affects math, while accounting for group-level variability across school_id.\n\nThe model adjusts for fixed effect(s), including cltype, math_old, which estimate the overall relationship with math across the entire dataset. For more detailed interpretations of fixed effects, use `details = \"fixed\"`.\n\nThe model includes the following random effects across grouping variables: cltype | school_id.\n *The random intercept(s), school_id, account for variations in the intercept across different groups, allowing each group to have its own baseline value that deviates from the overall average.\n *On top of the varying baselines, the model allows the effects of cltype on math to differ across their corresponding groups. This means that not only can each group start from a different baseline, but the strength and direction of the relationships between these variables and math can also vary from one group to another.\nCheck `details = 'random'` for more interpretation."
+  },
+  {
+    "objectID": "index.html#fixed",
+    "href": "index.html#fixed",
+    "title": "lme4u: An R Package",
+    "section": "“fixed”",
+    "text": "“fixed”\n\nA detailed explanation of the fixed effects, including interpretations of individual estimates and their implications within the model context:\n\n\n\n\n\nfix &lt;- explain_lmer(model, \"fixed\")\n\nThis model includes the following fixed effects: cltypesmall, cltyperegular+aide, math_old, along with the baseline estimate (Intercept).\nFixed effects estimate the average relationship between the predictors and the response variable `math` across all groups.\nThese effects reflect how changes in each predictor influence `math`, assuming all other variables are held constant and deviations from the baseline are measured accordingly.\n\nTo interpret the estimates:\n- The &lt;Estimate&gt; represents the expected change in `math` for a one-unit change in the predictor. \n- The &lt;Standard Error&gt; reflects uncertainty around the estimate.\n- The &lt;t-value&gt; measures the significance of the effect relative to its variability.\n- The &lt;Correlation&gt; provides insight into the relationships between fixed effect predictors.\n\n\nFor detailed interpretations of each fixed effect, use: `attr(, 'fixed_details')[['variable_name']]` to view specific results. You can find the list of available fixed effect variable names using: `attr(, 'fixed_names')` to guide your extraction."
+  },
+  {
+    "objectID": "index.html#random",
+    "href": "index.html#random",
+    "title": "lme4u: An R Package",
+    "section": "“random”",
+    "text": "“random”\n\nA detailed explanation of random intercepts, slopes, and variance components to highlight across-group variability:\n\n\n\n\n\n# Nested-grouping example\nmodel_nest &lt;- lmer(math ~ cltype + math_old + (1|system_id) + (1|system_id:school_id), data = star)\nrandom_nest &lt;- explain_lmer(model_nest, \"random\")\n\nThere are 2 random terms you fit in the model:\n\n1 | system_id: Your model assumes there is across-group heterogeneity in the baseline level of math across system_id (random intercepts), allowing each group to have its own starting point that deviates from the overall average. \n\n1 | system_id:school_id: This term captures a nested random effect structure where observations are grouped within 'school_id' nested within 'system_id'. Your model assumes there is across-group heterogeneity in the baseline level of math across this hierarchy, allowing each lower-level group to deviate from both the overall average and the average of its immediate higher-level group.\n\nTo explore variance contributions based on the model estimates, use: `attr(, 'var_details')`."
+  },
+  {
+    "objectID": "index.html#more-functions-to-be-added",
+    "href": "index.html#more-functions-to-be-added",
+    "title": "lme4u: An R Package",
+    "section": "(More functions to be added …)",
+    "text": "(More functions to be added …)"
+  },
+  {
+    "objectID": "index.html#tbd",
+    "href": "index.html#tbd",
+    "title": "lme4u: An R Package",
+    "section": "(TBD)",
+    "text": "(TBD)"
+  },
+  {
+    "objectID": "index.html#explore-lme4u",
+    "href": "index.html#explore-lme4u",
+    "title": "lme4u: An R Package",
+    "section": "Explore lme4u",
+    "text": "Explore lme4u\n(Embed final vignettes / website)\n\n\n\n\nDuke University - Department of Statistical Science"
   }
 ]

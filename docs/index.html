@@ -29,6 +29,71 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto.css">
   <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -339,12 +404,275 @@ Holly Cui
 
 </section>
 <section>
-<section id="slide-1" class="title-slide slide level1 center">
-<h1>Slide 1</h1>
-<p>…</p>
+<section id="introduction" class="title-slide slide level1 center">
+<h1>Introduction</h1>
+
 </section>
-<section id="section" class="slide level2">
-<h2>1.1</h2>
+<section id="mixed-effects-modeling" class="slide level2">
+<h2>Mixed-Effects Modeling</h2>
+<p>Analyze data where observations are structured within groups, with fixed and random effects.</p>
+<p><br></p>
+<div class="cell fragment">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a><span class="fu">lm</span>(Score <span class="sc">~</span> Instruction, <span class="at">data =</span> mydata)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><br></p>
+<div class="cell fragment">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a></a>lme4<span class="sc">::</span><span class="fu">lmer</span>(Score <span class="sc">~</span> Instruction <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> School), <span class="at">data =</span> mydata)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><br></p>
+<div class="cell fragment">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a></a>lme4<span class="sc">::</span><span class="fu">glmer</span>(Score <span class="sc">~</span> Instruction <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> School), <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>), <span class="at">data =</span> mydata)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="why-lme4u" class="slide level2">
+<h2>Why <code>lme4u</code>?</h2>
+<ul>
+<li><strong>Interprets mixed-effects models</strong>: provides user-friendly interpretations for fixed and random effects.</li>
+<li><strong>Assumption diagnostics</strong>: automates residual analysis and visualizations for heterogeneity checks.</li>
+<li><strong>Hypothesis Testing</strong>: facilitates hypothesis testing specific to mixed structure.</li>
+<li><strong>Example Data</strong>: offers a cleaned dataset curated for the purpose of mixed-effect modeling.</li>
+</ul>
+</section></section>
+<section>
+<section id="data" class="title-slide slide level1 center">
+<h1>Data</h1>
+<p>A brand new dataset for mixed-effect modeling</p>
+</section>
+<section id="star" class="slide level2">
+<h2><code>star</code></h2>
+<p>A cleaned subset of the Project <a href="https://search.r-project.org/CRAN/refmans/AER/html/STAR.html">STAR</a> (student-teacher achievement ratio) dataset.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a></a><span class="fu">glimpse</span>(star)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 4,192
+Columns: 13
+$ school_id &lt;fct&gt; 63, 20, 5, 50, 69, 79, 5, 41, 19, 78, 11, 66, 38, 69, 43, 52…
+$ system_id &lt;fct&gt; 30, 11, 4, 21, 35, 41, 4, 17, 11, 41, 8, 32, 14, 35, 18, 22,…
+$ sctype    &lt;fct&gt; rural, suburban, rural, rural, rural, rural, rural, suburban…
+$ gender    &lt;fct&gt; female, female, female, male, male, male, male, female, fema…
+$ ethnicity &lt;fct&gt; cauc, afam, cauc, cauc, cauc, cauc, cauc, cauc, afam, cauc, …
+$ cltype    &lt;fct&gt; small, regular+aide, regular+aide, regular, regular, small, …
+$ tdegree   &lt;fct&gt; bachelor, bachelor, bachelor, master, bachelor, bachelor, ba…
+$ tyear     &lt;int&gt; 1, 4, 23, 8, 7, 14, 8, 19, 26, 13, 14, 24, 3, 12, 6, 15, 9, …
+$ lunch     &lt;fct&gt; free, non-free, non-free, non-free, non-free, free, free, no…
+$ read_old  &lt;int&gt; 568, 588, 573, 596, 614, 608, 608, 586, 520, 596, 569, 608, …
+$ read      &lt;int&gt; 587, 644, 599, 626, 641, 665, 597, 606, 578, 606, 606, 654, …
+$ math_old  &lt;int&gt; 579, 579, 550, 590, 639, 603, 579, 603, 540, 587, 584, 546, …
+$ math      &lt;int&gt; 593, 639, 583, 618, 684, 648, 589, 631, 606, 667, 596, 606, …</code></pre>
+</div>
+</div>
+</section></section>
+<section>
+<section id="objective-and-modeling" class="title-slide slide level1 center">
+<h1>Objective and Modeling</h1>
+
+</section>
+<section id="question-we-ask" class="slide level2">
+<h2>Question we ask …</h2>
+<div style="font-size: 70%;">
+<blockquote>
+<p><em>Does class size impact students’ math test performance, and how does this effect vary across schools?</em></p>
+</blockquote>
+</div>
+<p><span class="math display">\[
+\scriptsize \text{MathScore}_{ij} = \beta_0 + \beta_1(\text{ClassType}_{ij}) + b_{0j} + b_{1j}(\text{ClassType}_{ij}) + \epsilon_{ij}
+\]</span></p>
+<ul>
+<li><span class="math inline">\(\tiny i \text{ indexes students},\ j \text{ indexes schools.}\)</span></li>
+<li><span class="math inline">\(\tiny \beta_0, \beta_1 \text{ are fixed intercept and slope.}\)</span></li>
+<li><span class="math inline">\(\tiny b_{0j} \sim N(0, \tau^2_{b0}) \text{ is a random intercept for each school.}\)</span></li>
+<li><span class="math inline">\(\tiny b_{1j} \sim N(0, \tau^2_{b1}) \text{ is a random slope for ClassType in each school.}\)</span></li>
+<li><span class="math inline">\(\tiny \epsilon_{ij} \sim N(0, \sigma^2_{\epsilon}) \text{ is the residual error (within-school heterogeneity).}\)</span></li>
+</ul>
+</section>
+<section id="modeling" class="slide level2">
+<h2>Modeling</h2>
+<p>In R using <code>lme4</code>, this would be implemented as:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a></a>lme4<span class="sc">::</span><span class="fu">lmer</span>(math <span class="sc">~</span> cltype <span class="sc">+</span> (cltype <span class="sc">|</span> school_id), <span class="at">data =</span> star)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Linear mixed model fit by REML ['lmerMod']
+Formula: math ~ cltype + (cltype | school_id)
+   Data: star
+REML criterion at convergence: 42038.38
+Random effects:
+ Groups    Name               Std.Dev. Corr       
+ school_id (Intercept)        20.63               
+           cltypesmall        13.68    -0.46      
+           cltyperegular+aide 16.68    -0.44  0.43
+ Residual                     35.06               
+Number of obs: 4192, groups:  school_id, 71
+Fixed Effects:
+       (Intercept)         cltypesmall  cltyperegular+aide  
+         619.03624             4.84399            -0.09849  </code></pre>
+</div>
+</div>
+</section></section>
+<section>
+<section id="package-features" class="title-slide slide level1 center">
+<h1>Package Features</h1>
+<p><br></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a></a><span class="co"># Installation </span></span>
+<span id="cb8-2"><a></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"hollyyfc/lme4u"</span>)</span>
+<span id="cb8-3"><a></a><span class="fu">library</span>(lme4u)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="explain_lmermodel-details" class="slide level2">
+<h2><span style="font-size: 55px;"><code>explain_lmer(model, details)</code></span></h2>
+<p><br></p>
+<div style="border: 2px solid black; padding: 10px; background-color: #ececec; font-size: 30px">
+<p>✨ A core component of the package, which provides structured, user-friendly interpretations of linear mixed-effects models fitted using <code>lme4::lmer()</code>; supports three levels of interpretation via the <code>details</code> argument.</p>
+</div>
+<p><br></p>
+<p>To use this function, first do:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a></a>model <span class="ot">&lt;-</span> lme4<span class="sc">::</span><span class="fu">lmer</span>(math <span class="sc">~</span> cltype <span class="sc">+</span> math_old <span class="sc">+</span> (cltype <span class="sc">|</span> school_id), <span class="at">data =</span> star)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="general" class="slide level2">
+<h2><span style="font-size: 55px;">“general”</span></h2>
+<div style="font-size: 30px">
+<p>Default for <code>details</code> argument, which provides a high-level summary of the model, describing its structure, fixed effects, and random effects in a concise yet informative manner:</p>
+</div>
+<div style="margin-top: 20px;">
+
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a></a><span class="fu">explain_lmer</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>This linear mixed-effects model examines how cltype, math_old affects math, while accounting for group-level variability across school_id.
+
+The model adjusts for fixed effect(s), including cltype, math_old, which estimate the overall relationship with math across the entire dataset. For more detailed interpretations of fixed effects, use `details = "fixed"`.
+
+The model includes the following random effects across grouping variables: cltype | school_id.
+ *The random intercept(s), school_id, account for variations in the intercept across different groups, allowing each group to have its own baseline value that deviates from the overall average.
+ *On top of the varying baselines, the model allows the effects of cltype on math to differ across their corresponding groups. This means that not only can each group start from a different baseline, but the strength and direction of the relationships between these variables and math can also vary from one group to another.
+Check `details = 'random'` for more interpretation.</code></pre>
+</div>
+</div>
+</section>
+<section id="fixed" class="slide level2">
+<h2><span style="font-size: 55px;">“fixed”</span></h2>
+<div style="font-size: 30px">
+<p>A detailed explanation of the fixed effects, including interpretations of individual estimates and their implications within the model context:</p>
+</div>
+<div style="margin-top: 20px;">
+
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a></a>fix <span class="ot">&lt;-</span> <span class="fu">explain_lmer</span>(model, <span class="st">"fixed"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>This model includes the following fixed effects: cltypesmall, cltyperegular+aide, math_old, along with the baseline estimate (Intercept).
+Fixed effects estimate the average relationship between the predictors and the response variable `math` across all groups.
+These effects reflect how changes in each predictor influence `math`, assuming all other variables are held constant and deviations from the baseline are measured accordingly.
+
+To interpret the estimates:
+- The &lt;Estimate&gt; represents the expected change in `math` for a one-unit change in the predictor. 
+- The &lt;Standard Error&gt; reflects uncertainty around the estimate.
+- The &lt;t-value&gt; measures the significance of the effect relative to its variability.
+- The &lt;Correlation&gt; provides insight into the relationships between fixed effect predictors.
+
+
+For detailed interpretations of each fixed effect, use: `attr(, 'fixed_details')[['variable_name']]` to view specific results. You can find the list of available fixed effect variable names using: `attr(, 'fixed_names')` to guide your extraction.</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2">
+
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a></a><span class="fu">attr</span>(fix, <span class="st">"fixed_details"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$`(Intercept)`
+[1] "The intercept estimate suggests that when all predictors are set to zero, the expected value of `math` is approximately 201.646. This serves as the baseline for evaluating the effects of other variables in the model."
+
+$cltypesmall
+[1] "The fixed effect for 'cltypesmall' suggests that for a one-unit increase in 'cltypesmall', the expected change in `math` is approximately -0.434, assuming all other variables are held constant. This estimate has a standard error of 2.406 and a t-value of -0.18. To assess the overall impact of this effect, consider it relative to the model's baseline intercept."
+
+$`cltyperegular+aide`
+[1] "The fixed effect for 'cltyperegular+aide' suggests that for a one-unit increase in 'cltyperegular+aide', the expected change in `math` is approximately -0.117, assuming all other variables are held constant. This estimate has a standard error of 2.503 and a t-value of -0.047. To assess the overall impact of this effect, consider it relative to the model's baseline intercept."
+
+$math_old
+[1] "The fixed effect for 'math_old' suggests that for a one-unit increase in 'math_old', the expected change in `math` is approximately 0.715, assuming all other variables are held constant. This estimate has a standard error of 0.01 and a t-value of 69.735. To assess the overall impact of this effect, consider it relative to the model's baseline intercept."</code></pre>
+</div>
+</div>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>If interaction is fitted to the model, the function is also able to detect and adjust the interpretation based on the interaction structure.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="random" class="slide level2">
+<h2><span style="font-size: 55px;">“random”</span></h2>
+<div style="font-size: 30px">
+<p>A detailed explanation of random intercepts, slopes, and variance components to highlight across-group variability:</p>
+</div>
+<div style="margin-top: 20px;">
+
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a></a><span class="co"># Nested-grouping example</span></span>
+<span id="cb16-2"><a></a>model_nest <span class="ot">&lt;-</span> <span class="fu">lmer</span>(math <span class="sc">~</span> cltype <span class="sc">+</span> math_old <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>system_id) <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>system_id<span class="sc">:</span>school_id), <span class="at">data =</span> star)</span>
+<span id="cb16-3"><a></a>random_nest <span class="ot">&lt;-</span> <span class="fu">explain_lmer</span>(model_nest, <span class="st">"random"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>There are 2 random terms you fit in the model:
+
+1 | system_id: Your model assumes there is across-group heterogeneity in the baseline level of math across system_id (random intercepts), allowing each group to have its own starting point that deviates from the overall average. 
+
+1 | system_id:school_id: This term captures a nested random effect structure where observations are grouped within 'school_id' nested within 'system_id'. Your model assumes there is across-group heterogeneity in the baseline level of math across this hierarchy, allowing each lower-level group to deviate from both the overall average and the average of its immediate higher-level group.
+
+To explore variance contributions based on the model estimates, use: `attr(, 'var_details')`.</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2">
+
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a></a><span class="fu">attr</span>(random_nest, <span class="st">"var_details"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$high_var
+[1] "The following terms explain a substantial proportion of the variance: Residual. This suggests that these random effects contribute meaningfully to capturing group-level heterogeneity. Note: The residual variance dominates, suggesting that within-group heterogeneity explains most of the variation. This could indicate a weak random effect structure."
+
+$low_var
+[1] "The following terms explain a relatively small portion of the variance: NA, system_id - (Intercept). You might reconsider including these terms in your random effect structure if their contributions are negligible."</code></pre>
+</div>
+</div>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>The “random” part is also capable of detecting uncorrelated random effects and multiple (&gt;= 3) random terms.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="more-functions-to-be-added" class="slide level2">
+<h2>(More functions to be added …)</h2>
+</section></section>
+<section>
+<section id="future-work" class="title-slide slide level1 center">
+<h1>Future Work</h1>
+
+</section>
+<section id="tbd" class="slide level2">
+<h2>(TBD)</h2>
+</section>
+<section id="explore-lme4u" class="slide level2">
+<h2>Explore <code>lme4u</code></h2>
+<p>(Embed final vignettes / website)</p>
 
 <div class="quarto-auto-generated-content">
 <p><img src="images/logo_hollyc.svg" class="slide-logo"></p>
@@ -509,7 +837,7 @@ Holly Cui
         previewLinks: false,
 
         // Transition style (none/fade/slide/convex/concave/zoom)
-        transition: 'slide',
+        transition: 'convex',
 
         // Transition speed (default/fast/slow)
         transitionSpeed: 'default',
@@ -563,6 +891,44 @@ Holly Cui
         ]
       });
     </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
       const toggleBodyColorMode = (bsSheetEl) => {
