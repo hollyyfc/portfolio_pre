@@ -1,6 +1,6 @@
 ---
-title: "`lme4u`: An R Package for `lme4` Interpretation and Diagnostics"
-subtitle: "MSS Portfolio Project"
+title: "`lme4u`: An R Package"
+subtitle: "Interpretation and Diagnostics for `lme4`"
 author: "Holly Cui"
 format: revealjs
 editor: visual

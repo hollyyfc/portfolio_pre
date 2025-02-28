@@ -4,7 +4,7 @@ project:
 
 format:
   revealjs:
-    theme: moon
+    theme: simple
     footer: "Duke University - Department of Statistical Science"
     logo: images/logo_hollyc.svg
     transition: slide
