@@ -478,13 +478,12 @@ $ math      &lt;int&gt; 593, 639, 583, 618, 684, 648, 589, 631, 606, 667, 596, 6
 </blockquote>
 </div>
 <p><span class="math display">\[
-\scriptsize \text{MathScore}_{ij} = \beta_0 + \beta_1(\text{ClassType}_{ij}) + \beta_2(\text{MathOld}_{ij}) + b_{0j} + b_{1j}(\text{MathOld}_{ij}) + \epsilon_{ij}
+\scriptsize \text{MathScore}_{ij} = \beta_0 + \beta_1(\text{ClassType}_{ij}) + \beta_2(\text{MathOld}_{ij}) + a_{0j} + a_{1j}(\text{MathOld}_{ij}) + \epsilon_{ij}
 \]</span></p>
 <ul>
 <li><span class="math inline">\(\tiny i \text{ indexes students},\ j \text{ indexes schools.}\)</span></li>
 <li><span class="math inline">\(\tiny \beta_0, \beta_1, \beta_2 \text{ are fixed intercept and slopes.}\)</span></li>
-<li><span class="math inline">\(\tiny b_{0j} \sim N(0, \tau^2_{0}) \text{ is a random intercept for each school.}\)</span></li>
-<li><span class="math inline">\(\tiny b_{1j} \sim N(0, \tau^2_{1}) \text{ is a random slope for MathOld in each school.}\)</span></li>
+<li><span class="math inline">\(\tiny \mathbf{a}_j = \left(a_{0j}, a_{1j} \right) \sim N(\mathbf{0,\Psi}) \text{ is a vector of random intercept for school and random slope for MathOld.}\)</span></li>
 <li><span class="math inline">\(\tiny \epsilon_{ij} \sim N(0, \sigma^2) \text{ is the residual (within-school heterogeneity).}\)</span></li>
 </ul>
 </section>

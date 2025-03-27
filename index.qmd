@@ -65,20 +65,19 @@ glimpse(star)
 :::
 
 $$
-\scriptsize \text{MathScore}_{ij} = \beta_0 + \beta_1(\text{ClassType}_{ij}) + \beta_2(\text{MathOld}_{ij}) + b_{0j} + b_{1j}(\text{MathOld}_{ij}) + \epsilon_{ij}
+\scriptsize \text{MathScore}_{ij} = \beta_0 + \beta_1(\text{ClassType}_{ij}) + \beta_2(\text{MathOld}_{ij}) + a_{0j} + a_{1j}(\text{MathOld}_{ij}) + \epsilon_{ij}
 $$
 
 - $\tiny i \text{ indexes students},\ j \text{ indexes schools.}$
 - $\tiny \beta_0, \beta_1, \beta_2 \text{ are fixed intercept and slopes.}$
-- $\tiny b_{0j} \sim N(0, \tau^2_{0}) \text{ is a random intercept for each school.}$
-- $\tiny b_{1j} \sim N(0, \tau^2_{1}) \text{ is a random slope for MathOld in each school.}$
+- $\tiny \mathbf{a}_j = \left(a_{0j}, a_{1j} \right) \sim N(\mathbf{0,\Psi}) \text{ is a vector of random intercept for school and random slope for MathOld.}$
 - $\tiny \epsilon_{ij} \sim N(0, \sigma^2) \text{ is the residual (within-school heterogeneity).}$
 
 ## Modeling
 
 In R using `lme4`, this would be implemented as:
 
-```{r, echo=TRUE}
+```{r, echo=TRUE, warning=FALSE, message=FALSE}
 lme4::lmer(math ~ cltype + math_old + (math_old | school_id), data = star)
 ```
 
