@@ -223,16 +223,207 @@ flowchart LR
 
 - the **reduced model** under $H_0$
 - the appropriate **null distribution** for the test statistic $\lambda(\textbf{y})$
-- reject $H_0$ if $\lambda(\textbf{y})$ is larger than the critical value
+- reject $H_0$ if $\lambda_{obs}$ is larger than the critical value
 :::
 :::
 
 :::
 
-## (fixed)
+##  <span style="font-size: 45px;">Fixed Effect</span>
+
+
+<div style="font-size: 25px;">
+::: panel-tabset
+## Math
+
+**$M_1$ (full model)**: with fixed effect of $x_{i,j}$
+$$
+\begin{aligned}
+y_{i,j} &= \beta_0 + \beta_1x_{i,j} + a_j + \epsilon_{i,j} \\
+a_j &\sim N(0,\tau^2)
+\end{aligned}
+$$
+**$M_0$ (reduced model)**: without fixed effect of $x_{i,j}$
+$$
+\begin{aligned}
+y_{i,j} &= \beta_0 + a_j + \epsilon_{i,j} \\
+a_j &\sim N(0,\tau^2)
+\end{aligned}
+$$
+
+**Null distribution**: where the change in the number of parameters is $d=1$
+$$\lambda(\textbf{y}) \sim \chi^2_d$$ 
+
+## Code
+
+<div style="font-size: 30px;">
+
+```{r, echo=TRUE}
+fix_result <- lrt_lmer(model, target = "math_old", type = "fixed", data = star)
+```
+
+
+```{r, echo=TRUE}
+fix_result
+```
+
+</div>
+
+:::
+</div>
+
+
+##  <span style="font-size: 45px;">Random Intercept</span>
+
+<div style="font-size: 20px;">
+::: panel-tabset
+## Math
+
+**$M_1$ (full model)**: with random intercept (within-group correlation) $\tau^2$
+$$
+\mathbf{y_j} = \mathbf{X_j\beta} + \epsilon_{j},\ 
+\text{Cov} \left[
+\begin{pmatrix}
+\epsilon_{1,j} \\
+\vdots \\
+\epsilon_{n,j}
+\end{pmatrix}
+\right]
+=
+\begin{pmatrix}
+\sigma^2 + \tau^2 & \tau^2 & \cdots & \tau^2 \\
+\tau^2 & \sigma^2 + \tau^2 & \cdots & \tau^2 \\
+\vdots & \vdots & \ddots & \vdots \\
+\tau^2 & \tau^2 & \cdots & \sigma^2 + \tau^2
+\end{pmatrix}
+$$
+**$M_0$ (reduced model)**: without random intercept $\tau^2$
+$$
+\mathbf{y_j} = \mathbf{X_j\beta} + \epsilon_{j},\ 
+\text{Cov} \left[
+\begin{pmatrix}
+\epsilon_{1,j} \\
+\vdots \\
+\epsilon_{n,j}
+\end{pmatrix}
+\right]
+=
+\begin{pmatrix}
+\sigma^2 & 0 & \cdots & 0 \\
+0 & \sigma^2 & \cdots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \cdots & \sigma^2
+\end{pmatrix}
+$$
+
+**(Asymptotic) Null distribution**: $\lambda(\mathbf{y})$ has a mixture distribution under $M_0$ ($d=1$)
+$$
+\lambda(\mathbf{y}) =
+\begin{cases}
+X_0 = 0 & \text{with probability } 1/2 \\
+X_1 \sim \chi^2_1 & \text{with probability } 1/2
+\end{cases}
+$$
+
+## Code
+
+<div style="font-size: 27px;">
+
+```{r, echo=TRUE}
+random_intercept <- lrt_lmer(model, target = "school_id", type = "random", data = star)
+```
+
+::: {.callout-note title="Calculating p-value under mixture null" appearance="minimal"}
+Recall that a p-value is the probability under the null distribution of getting a test statistic equal to or larger than the observed test statistic. 
+
+**Folklore**: _"The p-value for testing ... the random intercept variance is half this [$\chi^2_1$] tail value"_ (only if $\lambda_{obs} \neq 0$). Thus:
+$$
+\text{Pr}(\lambda(\mathbf{y}) \geq \lambda_{obs}) = \frac{1}{2} \text{Pr}(\chi^2_1 \geq \lambda_{obs}),\ \lambda_{obs}>0
+$$
+In R, we translate to: 
+
+<div style="text-align: center;">
+  <code>0.5 * (1 - pchisq(lambda, 1))</code>
+</div>
+:::
+
+</div>
+
+:::
+</div>
+
+
+
+##  <span style="font-size: 45px;">Random Slope</span>
+
+<div style="font-size: 20px;">
+::: panel-tabset
+
+## Math
+
+$$
+y_{i,j} = \mathbf{\beta^\intercal x_{i,j}} + \mathbf{a_j^\intercal z_{i,j}} + \epsilon_{i,j}
+$$
+If $\mathbf{a_j} \in \mathbb{R}^p$, then
+$$
+\text{Cov}[\mathbf{a}_j] = \Psi =
+\begin{pmatrix}
+\psi_1^2 & \psi_{12} & \cdots & \psi_{1p} \\
+\psi_{21} & \psi_2^2 & \cdots & \psi_{2p} \\
+\vdots & \vdots & \ddots & \vdots \\
+\psi_{p1} & \psi_{p2} & \cdots & \psi_p^2
+\end{pmatrix}
+$$
+**$M_1$ (full model)**: \ with $\psi^2_p \neq 0$ and covariances $\psi_{pk} \neq 0$
+
+**$M_0$ (reduced model)**: \ $\psi^2_p=0$ and covariances $\psi_{pk}=0$
+
+**(Asymptotic) Null distribution**: \ $\lambda(\mathbf{y})$ has a mixture distribution under $M_0$ ($d=p$)
+$$
+\lambda(\mathbf{y}) =
+\begin{cases}
+X_{p-1} \sim \chi^2_{p-1} & \text{with probability } 1/2 \\
+X_p \sim \chi^2_p & \text{with probability } 1/2
+\end{cases}
+$$
+
+## Code
+<div style="font-size: 28px;">
+```{r, echo=TRUE}
+model <- lmer(math ~ cltype + math_old + (math_old|school_id), data = star) # change model later?
+random_slope <- lrt_lmer(model, target = "math_old", type = "random", data = star)
+```
+
+::: {.callout-note title="Calculating p-value under mixture null" appearance="minimal"}
+
+Similar to the previous calculation of p-value, we have:
+$$
+\text{Pr}(\lambda(\mathbf{y}) \geq \lambda_{obs}) = \frac{1}{2} \left( \text{Pr}(\chi^2_{p-1} \geq \lambda_{obs}) + \text{Pr}(\chi^2_p \geq \lambda_{obs}) \right)
+$$
+
+In R, we translate to: 
+
+<div style="text-align: center; justify-content: center;">
+  <code>0.5 * ((1 - pchisq(lambda, p-1)) + (1 - pchisq(lambda, p)))</code>
+</div>
+:::
+
+</div>
+
+:::
+</div>
+
+
+
+
+
+
+
+
 
 
 # Future Work
+
 
 ## (TBD)
 

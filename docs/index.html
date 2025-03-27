@@ -716,13 +716,218 @@ $low_var
 <ul>
 <li>the <strong>reduced model</strong> under <span class="math inline">\(H_0\)</span></li>
 <li>the appropriate <strong>null distribution</strong> for the test statistic <span class="math inline">\(\lambda(\textbf{y})\)</span></li>
-<li>reject <span class="math inline">\(H_0\)</span> if <span class="math inline">\(\lambda(\textbf{y})\)</span> is larger than the critical value</li>
+<li>reject <span class="math inline">\(H_0\)</span> if <span class="math inline">\(\lambda_{obs}\)</span> is larger than the critical value</li>
 </ul>
 </div>
 </div></div>
 </section>
-<section id="fixed-1" class="slide level2">
-<h2>(fixed)</h2>
+<section id="fixed-effect" class="slide level2">
+<h2><span style="font-size: 45px;">Fixed Effect</span></h2>
+<div style="font-size: 25px;">
+<div class="panel-tabset">
+<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Math</a></li><li><a href="#tabset-1-2">Code</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1">
+<p><strong><span class="math inline">\(M_1\)</span> (full model)</strong>: with fixed effect of <span class="math inline">\(x_{i,j}\)</span> <span class="math display">\[
+\begin{aligned}
+y_{i,j} &amp;= \beta_0 + \beta_1x_{i,j} + a_j + \epsilon_{i,j} \\
+a_j &amp;\sim N(0,\tau^2)
+\end{aligned}
+\]</span> <strong><span class="math inline">\(M_0\)</span> (reduced model)</strong>: without fixed effect of <span class="math inline">\(x_{i,j}\)</span> <span class="math display">\[
+\begin{aligned}
+y_{i,j} &amp;= \beta_0 + a_j + \epsilon_{i,j} \\
+a_j &amp;\sim N(0,\tau^2)
+\end{aligned}
+\]</span></p>
+<p><strong>Null distribution</strong>: where the change in the number of parameters is <span class="math inline">\(d=1\)</span> <span class="math display">\[\lambda(\textbf{y}) \sim \chi^2_d\]</span></p>
+</div>
+<div id="tabset-1-2">
+<div style="font-size: 30px;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a></a>fix_result <span class="ot">&lt;-</span> <span class="fu">lrt_lmer</span>(model, <span class="at">target =</span> <span class="st">"math_old"</span>, <span class="at">type =</span> <span class="st">"fixed"</span>, <span class="at">data =</span> star)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Likelihood Ratio Test for 'math_old' (fixed effect)
+Full Model: math ~ cltype + math_old + (cltype | school_id)
+Reduced Model: math ~ cltype + (cltype | school_id)
+Test Statistics:
+- Log-Likelihood Difference: 3202.807
+- Degrees of Freedom: 1 (Difference in estimated parameters)
+- P-Value: &lt; 2.2e-16 (Chi-square test)
+Since p = &lt; 2.2e-16, under alpha level of 0.05, we reject the null hypothesis. The test suggests that the fixed effect of math_old is statistically significant and contributes to the model.</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a></a>fix_result</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$logLik
+[1] 3202.807
+
+$df
+[1] 1
+
+$pvalue
+[1] 0</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="random-intercept" class="slide level2">
+<h2><span style="font-size: 45px;">Random Intercept</span></h2>
+<div style="font-size: 20px;">
+<div class="panel-tabset">
+<ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1">Math</a></li><li><a href="#tabset-2-2">Code</a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1">
+<p><strong><span class="math inline">\(M_1\)</span> (full model)</strong>: with random intercept (within-group correlation) <span class="math inline">\(\tau^2\)</span> <span class="math display">\[
+\mathbf{y_j} = \mathbf{X_j\beta} + \epsilon_{j},\
+\text{Cov} \left[
+\begin{pmatrix}
+\epsilon_{1,j} \\
+\vdots \\
+\epsilon_{n,j}
+\end{pmatrix}
+\right]
+=
+\begin{pmatrix}
+\sigma^2 + \tau^2 &amp; \tau^2 &amp; \cdots &amp; \tau^2 \\
+\tau^2 &amp; \sigma^2 + \tau^2 &amp; \cdots &amp; \tau^2 \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+\tau^2 &amp; \tau^2 &amp; \cdots &amp; \sigma^2 + \tau^2
+\end{pmatrix}
+\]</span> <strong><span class="math inline">\(M_0\)</span> (reduced model)</strong>: without random intercept <span class="math inline">\(\tau^2\)</span> <span class="math display">\[
+\mathbf{y_j} = \mathbf{X_j\beta} + \epsilon_{j},\
+\text{Cov} \left[
+\begin{pmatrix}
+\epsilon_{1,j} \\
+\vdots \\
+\epsilon_{n,j}
+\end{pmatrix}
+\right]
+=
+\begin{pmatrix}
+\sigma^2 &amp; 0 &amp; \cdots &amp; 0 \\
+0 &amp; \sigma^2 &amp; \cdots &amp; 0 \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+0 &amp; 0 &amp; \cdots &amp; \sigma^2
+\end{pmatrix}
+\]</span></p>
+<p><strong>(Asymptotic) Null distribution</strong>: <span class="math inline">\(\lambda(\mathbf{y})\)</span> has a mixture distribution under <span class="math inline">\(M_0\)</span> (<span class="math inline">\(d=1\)</span>) <span class="math display">\[
+\lambda(\mathbf{y}) =
+\begin{cases}
+X_0 = 0 &amp; \text{with probability } 1/2 \\
+X_1 \sim \chi^2_1 &amp; \text{with probability } 1/2
+\end{cases}
+\]</span></p>
+</div>
+<div id="tabset-2-2">
+<div style="font-size: 27px;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a></a>random_intercept <span class="ot">&lt;-</span> <span class="fu">lrt_lmer</span>(model, <span class="at">target =</span> <span class="st">"school_id"</span>, <span class="at">type =</span> <span class="st">"random"</span>, <span class="at">data =</span> star)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Likelihood Ratio Test for 'school_id' (random intercept effect)
+Full Model: math ~ cltype + math_old + (1 | school_id)
+Reduced Model: math ~ cltype + math_old
+Test Statistics:
+- Log-Likelihood Difference: 603.7954
+- Degrees of Freedom: 1 (Difference in estimated parameters)
+- P-Value: &lt; 2.2e-16 (Chi-square test)
+Since p = &lt; 2.2e-16, under alpha level of 0.05, we reject the null hypothesis. The test suggests that the random intercept effect of school_id is statistically significant and contributes to the model.</code></pre>
+</div>
+</div>
+<div title="Calculating p-value under mixture null">
+<div class="callout callout-note no-icon callout-titled callout-style-simple">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Calculating p-value under mixture null</strong></p>
+</div>
+<div class="callout-content">
+<p>Recall that a p-value is the probability under the null distribution of getting a test statistic equal to or larger than the observed test statistic.</p>
+<p><strong>Folklore</strong>: <em>“The p-value for testing … the random intercept variance is half this [<span class="math inline">\(\chi^2_1\)</span>] tail value”</em> (only if <span class="math inline">\(\lambda_{obs} \neq 0\)</span>). Thus: <span class="math display">\[
+\text{Pr}(\lambda(\mathbf{y}) \geq \lambda_{obs}) = \frac{1}{2} \text{Pr}(\chi^2_1 \geq \lambda_{obs}),\ \lambda_{obs}&gt;0
+\]</span> In R, we translate to:</p>
+<div style="text-align: center;">
+<p><code>0.5 * (1 - pchisq(lambda, 1))</code></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="random-slope" class="slide level2">
+<h2><span style="font-size: 45px;">Random Slope</span></h2>
+<div style="font-size: 20px;">
+<div class="panel-tabset">
+<ul id="tabset-3" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-3-1">Math</a></li><li><a href="#tabset-3-2">Code</a></li></ul>
+<div class="tab-content">
+<div id="tabset-3-1">
+<p><span class="math display">\[
+y_{i,j} = \mathbf{\beta^\intercal x_{i,j}} + \mathbf{a_j^\intercal z_{i,j}} + \epsilon_{i,j}
+\]</span> If <span class="math inline">\(\mathbf{a_j} \in \mathbb{R}^p\)</span>, then <span class="math display">\[
+\text{Cov}[\mathbf{a}_j] = \Psi =
+\begin{pmatrix}
+\psi_1^2 &amp; \psi_{12} &amp; \cdots &amp; \psi_{1p} \\
+\psi_{21} &amp; \psi_2^2 &amp; \cdots &amp; \psi_{2p} \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+\psi_{p1} &amp; \psi_{p2} &amp; \cdots &amp; \psi_p^2
+\end{pmatrix}
+\]</span> <strong><span class="math inline">\(M_1\)</span> (full model)</strong>: &nbsp;with <span class="math inline">\(\psi^2_p \neq 0\)</span> and covariances <span class="math inline">\(\psi_{pk} \neq 0\)</span></p>
+<p><strong><span class="math inline">\(M_0\)</span> (reduced model)</strong>: &nbsp;<span class="math inline">\(\psi^2_p=0\)</span> and covariances <span class="math inline">\(\psi_{pk}=0\)</span></p>
+<p><strong>(Asymptotic) Null distribution</strong>: &nbsp;<span class="math inline">\(\lambda(\mathbf{y})\)</span> has a mixture distribution under <span class="math inline">\(M_0\)</span> (<span class="math inline">\(d=p\)</span>) <span class="math display">\[
+\lambda(\mathbf{y}) =
+\begin{cases}
+X_{p-1} \sim \chi^2_{p-1} &amp; \text{with probability } 1/2 \\
+X_p \sim \chi^2_p &amp; \text{with probability } 1/2
+\end{cases}
+\]</span></p>
+</div>
+<div id="tabset-3-2">
+<div style="font-size: 28px;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a></a>model <span class="ot">&lt;-</span> <span class="fu">lmer</span>(math <span class="sc">~</span> cltype <span class="sc">+</span> math_old <span class="sc">+</span> (math_old<span class="sc">|</span>school_id), <span class="at">data =</span> star) <span class="co"># change model later?</span></span>
+<span id="cb26-2"><a></a>random_slope <span class="ot">&lt;-</span> <span class="fu">lrt_lmer</span>(model, <span class="at">target =</span> <span class="st">"math_old"</span>, <span class="at">type =</span> <span class="st">"random"</span>, <span class="at">data =</span> star)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Likelihood Ratio Test for 'math_old' (random slope effect)
+Full Model: math ~ cltype + math_old + (math_old | school_id)
+Reduced Model: math ~ cltype + math_old + (1 | school_id)
+Test Statistics:
+- Log-Likelihood Difference: 34.1071
+- Degrees of Freedom: 2 (Difference in estimated parameters)
+- P-Value: 2.223e-08 (Chi-square test)
+Since p = 2.223e-08, under alpha level of 0.05, we reject the null hypothesis. The test suggests that the random slope effect of math_old is statistically significant and contributes to the model.</code></pre>
+</div>
+</div>
+<div title="Calculating p-value under mixture null">
+<div class="callout callout-note no-icon callout-titled callout-style-simple">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Calculating p-value under mixture null</strong></p>
+</div>
+<div class="callout-content">
+<p>Similar to the previous calculation of p-value, we have: <span class="math display">\[
+\text{Pr}(\lambda(\mathbf{y}) \geq \lambda_{obs}) = \frac{1}{2} \left( \text{Pr}(\chi^2_{p-1} \geq \lambda_{obs}) + \text{Pr}(\chi^2_p \geq \lambda_{obs}) \right)
+\]</span></p>
+<p>In R, we translate to:</p>
+<div style="text-align: center; justify-content: center;">
+<p><code>0.5 * ((1 - pchisq(lambda, p-1)) + (1 - pchisq(lambda, p)))</code></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 </section></section>
 <section>
 <section id="future-work" class="title-slide slide level1 center">
