@@ -417,9 +417,9 @@ In R, we translate to:
 
 
 
+## <span style="font-size: 55px;">`assumption_check()`</span>
 
-
-
+(To be added ...)
 
 
 
@@ -464,7 +464,23 @@ In R, we translate to:
 :::
 
 
+# Thank you!
 
 
+<div style="display: flex; flex-direction: column; justify-content: flex-end; height: 65vh;">
+<div style="font-size: 25px; text-align: right;">
+  
+📦 <strong>Pkgdown Site:</strong><br>
+<a href="https://hollyyfc.github.io/lme4u/" target="_blank">
+  hollyyfc.github.io/lme4u/
+</a>
 
+💻 <strong>Source Code:</strong><br>
+<a href="https://github.com/hollyyfc/lme4u" target="_blank">
+  github.com/hollyyfc/lme4u
+</a>
+
+</div>
+
+</div>
 
