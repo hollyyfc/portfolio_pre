@@ -60,26 +60,26 @@ glimpse(star)
 ## Question we ask ...
 
 ::: {style="font-size: 70%;"}
-> _Does class size impact students' math test performance, and how does this effect vary across schools?_
+> _Does prior math performance impact students' current math scores (controlling for class type), and how does this effect vary across schools?_
 
 :::
 
 $$
-\scriptsize \text{MathScore}_{ij} = \beta_0 + \beta_1(\text{ClassType}_{ij}) + b_{0j} + b_{1j}(\text{ClassType}_{ij}) + \epsilon_{ij}
+\scriptsize \text{MathScore}_{ij} = \beta_0 + \beta_1(\text{ClassType}_{ij}) + \beta_2(\text{MathOld}_{ij}) + b_{0j} + b_{1j}(\text{MathOld}_{ij}) + \epsilon_{ij}
 $$
 
 - $\tiny i \text{ indexes students},\ j \text{ indexes schools.}$
-- $\tiny \beta_0, \beta_1 \text{ are fixed intercept and slope.}$
-- $\tiny b_{0j} \sim N(0, \tau^2_{b0}) \text{ is a random intercept for each school.}$
-- $\tiny b_{1j} \sim N(0, \tau^2_{b1}) \text{ is a random slope for ClassType in each school.}$
-- $\tiny \epsilon_{ij} \sim N(0, \sigma^2_{\epsilon}) \text{ is the residual error (within-school heterogeneity).}$
+- $\tiny \beta_0, \beta_1, \beta_2 \text{ are fixed intercept and slopes.}$
+- $\tiny b_{0j} \sim N(0, \tau^2_{0}) \text{ is a random intercept for each school.}$
+- $\tiny b_{1j} \sim N(0, \tau^2_{1}) \text{ is a random slope for MathOld in each school.}$
+- $\tiny \epsilon_{ij} \sim N(0, \sigma^2) \text{ is the residual (within-school heterogeneity).}$
 
 ## Modeling
 
 In R using `lme4`, this would be implemented as:
 
 ```{r, echo=TRUE}
-lme4::lmer(math ~ cltype + (cltype | school_id), data = star)
+lme4::lmer(math ~ cltype + math_old + (math_old | school_id), data = star)
 ```
 
 # Package Features
@@ -105,7 +105,7 @@ library(lme4u)
 
 To use this function, first do:
 ```{r, message=FALSE, echo=TRUE}
-model <- lme4::lmer(math ~ cltype + math_old + (cltype | school_id), data = star)
+model <- lme4::lmer(math ~ cltype + math_old + (math_old | school_id), data = star)
 ```
 
 ## <span style="font-size: 55px;">"general"</span>
@@ -256,7 +256,7 @@ $$\lambda(\textbf{y}) \sim \chi^2_d$$
 
 ## Code
 
-<div style="font-size: 30px;">
+<div style="font-size: 27px;">
 
 ```{r, echo=TRUE}
 fix_result <- lrt_lmer(model, target = "math_old", type = "fixed", data = star)
@@ -266,6 +266,10 @@ fix_result <- lrt_lmer(model, target = "math_old", type = "fixed", data = star)
 ```{r, echo=TRUE}
 fix_result
 ```
+
+::: {.callout-tip title="About lmer for testing" appearance="minimal"}
+All models passed to `lrt_lmer()` are internally refitted with `lmer(REML = FALSE)` to ensure valid likelihood ratio tests using maximum likelihood. 
+:::
 
 </div>
 
@@ -390,7 +394,6 @@ $$
 ## Code
 <div style="font-size: 28px;">
 ```{r, echo=TRUE}
-model <- lmer(math ~ cltype + math_old + (math_old|school_id), data = star) # change model later?
 random_slope <- lrt_lmer(model, target = "math_old", type = "random", data = star)
 ```
 
@@ -425,7 +428,33 @@ In R, we translate to:
 # Future Work
 
 
-## (TBD)
+## 
+
+::: columns
+::: {.column width="50%"}
+### 👩‍💻 Under Development
+::: {style="font-size: 26px; padding: 50px; border-right: 2px solid #ddd; padding-right: 20px;"}
+
+- Auto-detect variable transformations (`factor()`, `log()`, `sqrt()`, etc) in input models
+- Accommodate more complex or edge-case input models from more advanced users
+- Create a generalized model selection function with BIC and suitable metrics for mixed-effect models
+- Debug from submitted issues and prepare for CRAN submission
+
+:::
+:::
+
+::: {.column width="50%"}
+### 💡 And More ...
+::: {style="font-size: 26px; padding: 50px;"}
+
+- Design an uncertainty quantification function, which includes a suite of appropriate intervals (constant coverage, Bayesian, etc), for both fixed and random effects in `lmer` models
+- Extend existing functionality to `glmer` and `nlme` model objects
+- Incorporate S3/S4 objects or C++ code for faster computation
+
+:::
+:::
+
+:::
 
 ## 
 

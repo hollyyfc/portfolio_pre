@@ -474,40 +474,40 @@ $ math      &lt;int&gt; 593, 639, 583, 618, 684, 648, 589, 631, 606, 667, 596, 6
 <h2>Question we ask …</h2>
 <div style="font-size: 70%;">
 <blockquote>
-<p><em>Does class size impact students’ math test performance, and how does this effect vary across schools?</em></p>
+<p><em>Does prior math performance impact students’ current math scores (controlling for class type), and how does this effect vary across schools?</em></p>
 </blockquote>
 </div>
 <p><span class="math display">\[
-\scriptsize \text{MathScore}_{ij} = \beta_0 + \beta_1(\text{ClassType}_{ij}) + b_{0j} + b_{1j}(\text{ClassType}_{ij}) + \epsilon_{ij}
+\scriptsize \text{MathScore}_{ij} = \beta_0 + \beta_1(\text{ClassType}_{ij}) + \beta_2(\text{MathOld}_{ij}) + b_{0j} + b_{1j}(\text{MathOld}_{ij}) + \epsilon_{ij}
 \]</span></p>
 <ul>
 <li><span class="math inline">\(\tiny i \text{ indexes students},\ j \text{ indexes schools.}\)</span></li>
-<li><span class="math inline">\(\tiny \beta_0, \beta_1 \text{ are fixed intercept and slope.}\)</span></li>
-<li><span class="math inline">\(\tiny b_{0j} \sim N(0, \tau^2_{b0}) \text{ is a random intercept for each school.}\)</span></li>
-<li><span class="math inline">\(\tiny b_{1j} \sim N(0, \tau^2_{b1}) \text{ is a random slope for ClassType in each school.}\)</span></li>
-<li><span class="math inline">\(\tiny \epsilon_{ij} \sim N(0, \sigma^2_{\epsilon}) \text{ is the residual error (within-school heterogeneity).}\)</span></li>
+<li><span class="math inline">\(\tiny \beta_0, \beta_1, \beta_2 \text{ are fixed intercept and slopes.}\)</span></li>
+<li><span class="math inline">\(\tiny b_{0j} \sim N(0, \tau^2_{0}) \text{ is a random intercept for each school.}\)</span></li>
+<li><span class="math inline">\(\tiny b_{1j} \sim N(0, \tau^2_{1}) \text{ is a random slope for MathOld in each school.}\)</span></li>
+<li><span class="math inline">\(\tiny \epsilon_{ij} \sim N(0, \sigma^2) \text{ is the residual (within-school heterogeneity).}\)</span></li>
 </ul>
 </section>
 <section id="modeling" class="slide level2">
 <h2>Modeling</h2>
 <p>In R using <code>lme4</code>, this would be implemented as:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a></a>lme4<span class="sc">::</span><span class="fu">lmer</span>(math <span class="sc">~</span> cltype <span class="sc">+</span> (cltype <span class="sc">|</span> school_id), <span class="at">data =</span> star)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a></a>lme4<span class="sc">::</span><span class="fu">lmer</span>(math <span class="sc">~</span> cltype <span class="sc">+</span> math_old <span class="sc">+</span> (math_old <span class="sc">|</span> school_id), <span class="at">data =</span> star)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Linear mixed model fit by REML ['lmerMod']
-Formula: math ~ cltype + (cltype | school_id)
+Formula: math ~ cltype + math_old + (math_old | school_id)
    Data: star
-REML criterion at convergence: 42038.38
+REML criterion at convergence: 39138.33
 Random effects:
- Groups    Name               Std.Dev. Corr       
- school_id (Intercept)        20.63               
-           cltypesmall        13.68    -0.46      
-           cltyperegular+aide 16.68    -0.44  0.43
- Residual                     35.06               
+ Groups    Name        Std.Dev. Corr 
+ school_id (Intercept) 41.96971      
+           math_old     0.07904 -0.97
+ Residual              25.10719      
 Number of obs: 4192, groups:  school_id, 71
 Fixed Effects:
-       (Intercept)         cltypesmall  cltyperegular+aide  
-         619.03624             4.84399            -0.09849  </code></pre>
+       (Intercept)         cltypesmall  cltyperegular+aide            math_old  
+          209.0136              0.3321              0.4575              0.7027  
+optimizer (nloptwrap) convergence code: 0 (OK) ; 0 optimizer warnings; 3 lme4 warnings </code></pre>
 </div>
 </div>
 </section></section>
@@ -530,7 +530,7 @@ Fixed Effects:
 <p><br></p>
 <p>To use this function, first do:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a></a>model <span class="ot">&lt;-</span> lme4<span class="sc">::</span><span class="fu">lmer</span>(math <span class="sc">~</span> cltype <span class="sc">+</span> math_old <span class="sc">+</span> (cltype <span class="sc">|</span> school_id), <span class="at">data =</span> star)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a></a>model <span class="ot">&lt;-</span> lme4<span class="sc">::</span><span class="fu">lmer</span>(math <span class="sc">~</span> cltype <span class="sc">+</span> math_old <span class="sc">+</span> (math_old <span class="sc">|</span> school_id), <span class="at">data =</span> star)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="general" class="slide level2">
@@ -548,9 +548,9 @@ Fixed Effects:
 
 The model adjusts for fixed effect(s), including cltype, math_old, which estimate the overall relationship with math across the entire dataset. For more detailed interpretations of fixed effects, use `details = "fixed"`.
 
-The model includes the following random effects across grouping variables: cltype | school_id.
+The model includes the following random effects across grouping variables: math_old | school_id.
  *The random intercept(s), school_id, account for variations in the intercept across different groups, allowing each group to have its own baseline value that deviates from the overall average.
- *On top of the varying baselines, the model allows the effects of cltype on math to differ across their corresponding groups. This means that not only can each group start from a different baseline, but the strength and direction of the relationships between these variables and math can also vary from one group to another.
+ *On top of the varying baselines, the model allows the effects of math_old on math to differ across their corresponding groups. This means that not only can each group start from a different baseline, but the strength and direction of the relationships between these variables and math can also vary from one group to another.
 Check `details = 'random'` for more interpretation.</code></pre>
 </div>
 </div>
@@ -587,16 +587,16 @@ For detailed interpretations of each fixed effect, use: `attr(, 'fixed_details')
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a></a><span class="fu">attr</span>(fix, <span class="st">"fixed_details"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$`(Intercept)`
-[1] "The intercept estimate suggests that when all predictors are set to zero, the expected value of `math` is approximately 201.646. This serves as the baseline for evaluating the effects of other variables in the model."
+[1] "The intercept estimate suggests that when all predictors are set to zero, the expected value of `math` is approximately 209.014. This serves as the baseline for evaluating the effects of other variables in the model."
 
 $cltypesmall
-[1] "The fixed effect for 'cltypesmall' suggests that for a one-unit increase in 'cltypesmall', the expected change in `math` is approximately -0.434, assuming all other variables are held constant. This estimate has a standard error of 2.406 and a t-value of -0.18. To assess the overall impact of this effect, consider it relative to the model's baseline intercept."
+[1] "The fixed effect for 'cltypesmall' suggests that for a one-unit increase in 'cltypesmall', the expected change in `math` is approximately 0.332, assuming all other variables are held constant. This estimate has a standard error of 1.038 and a t-value of 0.32. To assess the overall impact of this effect, consider it relative to the model's baseline intercept."
 
 $`cltyperegular+aide`
-[1] "The fixed effect for 'cltyperegular+aide' suggests that for a one-unit increase in 'cltyperegular+aide', the expected change in `math` is approximately -0.117, assuming all other variables are held constant. This estimate has a standard error of 2.503 and a t-value of -0.047. To assess the overall impact of this effect, consider it relative to the model's baseline intercept."
+[1] "The fixed effect for 'cltyperegular+aide' suggests that for a one-unit increase in 'cltyperegular+aide', the expected change in `math` is approximately 0.457, assuming all other variables are held constant. This estimate has a standard error of 1.004 and a t-value of 0.456. To assess the overall impact of this effect, consider it relative to the model's baseline intercept."
 
 $math_old
-[1] "The fixed effect for 'math_old' suggests that for a one-unit increase in 'math_old', the expected change in `math` is approximately 0.715, assuming all other variables are held constant. This estimate has a standard error of 0.01 and a t-value of 69.735. To assess the overall impact of this effect, consider it relative to the model's baseline intercept."</code></pre>
+[1] "The fixed effect for 'math_old' suggests that for a one-unit increase in 'math_old', the expected change in `math` is approximately 0.703, assuming all other variables are held constant. This estimate has a standard error of 0.014 and a t-value of 48.851. To assess the overall impact of this effect, consider it relative to the model's baseline intercept."</code></pre>
 </div>
 </div>
 <div class="callout callout-tip callout-titled callout-style-default">
@@ -742,15 +742,15 @@ a_j &amp;\sim N(0,\tau^2)
 <p><strong>Null distribution</strong>: where the change in the number of parameters is <span class="math inline">\(d=1\)</span> <span class="math display">\[\lambda(\textbf{y}) \sim \chi^2_d\]</span></p>
 </div>
 <div id="tabset-1-2">
-<div style="font-size: 30px;">
+<div style="font-size: 27px;">
 <div class="cell">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a></a>fix_result <span class="ot">&lt;-</span> <span class="fu">lrt_lmer</span>(model, <span class="at">target =</span> <span class="st">"math_old"</span>, <span class="at">type =</span> <span class="st">"fixed"</span>, <span class="at">data =</span> star)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Likelihood Ratio Test for 'math_old' (fixed effect)
-Full Model: math ~ cltype + math_old + (cltype | school_id)
-Reduced Model: math ~ cltype + (cltype | school_id)
+Full Model: math ~ cltype + math_old + (math_old | school_id)
+Reduced Model: math ~ cltype + (math_old | school_id)
 Test Statistics:
-- Log-Likelihood Difference: 3202.807
+- Log-Likelihood Difference: 252.3957
 - Degrees of Freedom: 1 (Difference in estimated parameters)
 - P-Value: &lt; 2.2e-16 (Chi-square test)
 Since p = &lt; 2.2e-16, under alpha level of 0.05, we reject the null hypothesis. The test suggests that the fixed effect of math_old is statistically significant and contributes to the model.</code></pre>
@@ -760,13 +760,25 @@ Since p = &lt; 2.2e-16, under alpha level of 0.05, we reject the null hypothesis
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a></a>fix_result</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$logLik
-[1] 3202.807
+[1] 252.3957
 
 $df
 [1] 1
 
 $pvalue
-[1] 0</code></pre>
+[1] 7.801162e-57</code></pre>
+</div>
+</div>
+<div title="About lmer for testing">
+<div class="callout callout-tip no-icon callout-titled callout-style-simple">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>About lmer for testing</strong></p>
+</div>
+<div class="callout-content">
+<p>All models passed to <code>lrt_lmer()</code> are internally refitted with <code>lmer(REML = FALSE)</code> to ensure valid likelihood ratio tests using maximum likelihood.</p>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -892,8 +904,7 @@ X_p \sim \chi^2_p &amp; \text{with probability } 1/2
 <div id="tabset-3-2">
 <div style="font-size: 28px;">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a></a>model <span class="ot">&lt;-</span> <span class="fu">lmer</span>(math <span class="sc">~</span> cltype <span class="sc">+</span> math_old <span class="sc">+</span> (math_old<span class="sc">|</span>school_id), <span class="at">data =</span> star) <span class="co"># change model later?</span></span>
-<span id="cb26-2"><a></a>random_slope <span class="ot">&lt;-</span> <span class="fu">lrt_lmer</span>(model, <span class="at">target =</span> <span class="st">"math_old"</span>, <span class="at">type =</span> <span class="st">"random"</span>, <span class="at">data =</span> star)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a></a>random_slope <span class="ot">&lt;-</span> <span class="fu">lrt_lmer</span>(model, <span class="at">target =</span> <span class="st">"math_old"</span>, <span class="at">type =</span> <span class="st">"random"</span>, <span class="at">data =</span> star)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Likelihood Ratio Test for 'math_old' (random slope effect)
 Full Model: math ~ cltype + math_old + (math_old | school_id)
@@ -934,10 +945,31 @@ Since p = 2.223e-08, under alpha level of 0.05, we reject the null hypothesis. T
 <h1>Future Work</h1>
 
 </section>
-<section id="tbd" class="slide level2">
-<h2>(TBD)</h2>
-</section>
 <section id="section" class="slide level2">
+<h2></h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="under-development">👩‍💻 Under Development</h3>
+<div style="font-size: 26px; padding: 50px; border-right: 2px solid #ddd; padding-right: 20px;">
+<ul>
+<li>Auto-detect variable transformations (<code>factor()</code>, <code>log()</code>, <code>sqrt()</code>, etc) in input models</li>
+<li>Accommodate more complex or edge-case input models from more advanced users</li>
+<li>Create a generalized model selection function with BIC and suitable metrics for mixed-effect models</li>
+<li>Debug from submitted issues and prepare for CRAN submission</li>
+</ul>
+</div>
+</div><div class="column" style="width:50%;">
+<h3 id="and-more">💡 And More …</h3>
+<div style="font-size: 26px; padding: 50px;">
+<ul>
+<li>Design an uncertainty quantification function, which includes a suite of appropriate intervals (constant coverage, Bayesian, etc), for both fixed and random effects in <code>lmer</code> models</li>
+<li>Extend existing functionality to <code>glmer</code> and <code>nlme</code> model objects</li>
+<li>Incorporate S3/S4 objects or C++ code for faster computation</li>
+</ul>
+</div>
+</div></div>
+</section>
+<section id="section-1" class="slide level2">
 <h2></h2>
 <div style="text-align: center;">
 <iframe width="1800" height="680" src="https://hollyyfc.github.io/lme4u/" frameborder="0" style="background:white;"></iframe>
