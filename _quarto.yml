@@ -6,7 +6,7 @@ format:
   revealjs:
     theme: simple
     footer: "Duke University - Department of Statistical Science"
-    logo: images/logo_hollyc.svg
+    logo: images/logo.png
     transition: convex
     code-overflow: wrap
     code-line-numbers: true

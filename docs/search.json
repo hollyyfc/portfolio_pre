@@ -60,14 +60,28 @@
     "href": "index.html#random",
     "title": "lme4u: An R Package",
     "section": "“random”",
-    "text": "“random”\n\nA detailed explanation of random intercepts, slopes, and variance components to highlight across-group variability:\n\n\n\n\n\n# Nested-grouping example\nmodel_nest &lt;- lmer(math ~ cltype + math_old + (1|system_id) + (1|system_id:school_id), data = star)\nrandom_nest &lt;- explain_lmer(model_nest, \"random\")\n\nThere are 2 random terms you fit in the model:\n\n1 | system_id: Your model assumes there is across-group heterogeneity in the baseline level of math across system_id (random intercepts), allowing each group to have its own starting point that deviates from the overall average. \n\n1 | system_id:school_id: This term captures a nested random effect structure where observations are grouped within 'school_id' nested within 'system_id'. Your model assumes there is across-group heterogeneity in the baseline level of math across this hierarchy, allowing each lower-level group to deviate from both the overall average and the average of its immediate higher-level group.\n\nTo explore variance contributions based on the model estimates, use: `attr(, 'var_details')`."
+    "text": "“random”\n\nA detailed explanation of random intercepts, slopes, and variance components to highlight across-group variability:\n\n\n\n\n\n# Nested-grouping example\nmodel_nest &lt;- lmer(math ~ cltype + math_old + (1|system_id/school_id), data = star)\nrandom_nest &lt;- explain_lmer(model_nest, \"random\")\n\nThere are 2 random terms you fit in the model:\n\n1 | school_id:system_id: This term captures a nested random effect structure where observations are grouped within 'school_id' nested within 'system_id'. Your model assumes there is across-group heterogeneity in the baseline level of math across this hierarchy, allowing each lower-level group to deviate from both the overall average and the average of its immediate higher-level group.\n\n1 | system_id: Your model assumes there is across-group heterogeneity in the baseline level of math across system_id (random intercepts), allowing each group to have its own starting point that deviates from the overall average. \n\nTo explore variance contributions based on the model estimates, use: `attr(, 'var_details')`."
   },
   {
-    "objectID": "index.html#more-functions-to-be-added",
-    "href": "index.html#more-functions-to-be-added",
+    "objectID": "index.html#lrt_lmermodel-target-type-data-...",
+    "href": "index.html#lrt_lmermodel-target-type-data-...",
     "title": "lme4u: An R Package",
-    "section": "(More functions to be added …)",
-    "text": "(More functions to be added …)"
+    "section": "lrt_lmer(model, target, type, data, ...)",
+    "text": "lrt_lmer(model, target, type, data, ...)\n\n\n✨ Hypothesis testing on a selected fixed or random effect in a fitted lmer model via likelihood ratio test. Currently only support models fitted with lme4::lmer() that contain fixed effects and a single random structure.\n\n\n\n\n\\(H_0\\): The selected variable has no valid effect (i.e., its coefficient is 0 for fixed effects, or its variance component is 0 for random effects).\n\\(H_1\\): The selected variable has an effect (i.e., not 0)."
+  },
+  {
+    "objectID": "index.html#how-to-under-hlm",
+    "href": "index.html#how-to-under-hlm",
+    "title": "lme4u: An R Package",
+    "section": "How-to under HLM",
+    "text": "How-to under HLM\n\n\nCannot ignore grouping: observations not independent across groups\nControl for all desired covariates properly\nEnsure hierarchical linear models (HLM) instead of lm OLS or ANOVA\n\n\n\n\n\n\n\n\nflowchart LR\n  A[Macro Variables] --&gt; B[Within-Group Correlation]\n  B --&gt; A\n\n\n\n\n\n\n\n\n\n\n\nConstruct a reduced model based on the null hypothesis (by removing the target variable)\nCompare the full (\\(M_1\\)) vs. reduced (\\(M_0\\)) model fits\nUse the likelihood ratio test (LRT): \\[\\lambda(\\textbf{y}) = 2 \\log \\left( \\frac{L_1}{L_0} \\right) \\sim \\chi^2\\]\n\n\n\n\n✅ For each variable type (fixed or random), decide:\n\nthe reduced model under \\(H_0\\)\nthe appropriate null distribution for the test statistic \\(\\lambda(\\textbf{y})\\)\nreject \\(H_0\\) if \\(\\lambda(\\textbf{y})\\) is larger than the critical value"
+  },
+  {
+    "objectID": "index.html#fixed-1",
+    "href": "index.html#fixed-1",
+    "title": "lme4u: An R Package",
+    "section": "(fixed)",
+    "text": "(fixed)"
   },
   {
     "objectID": "index.html#tbd",
@@ -77,10 +91,10 @@
     "text": "(TBD)"
   },
   {
-    "objectID": "index.html#explore-lme4u",
-    "href": "index.html#explore-lme4u",
+    "objectID": "index.html#section",
+    "href": "index.html#section",
     "title": "lme4u: An R Package",
-    "section": "Explore lme4u",
-    "text": "Explore lme4u\n(Embed final vignettes / website)\n\n\n\n\nDuke University - Department of Statistical Science"
+    "section": "",
+    "text": "Duke University - Department of Statistical Science"
   }
 ]

@@ -385,6 +385,9 @@
       margin-right: 0; 
     }
   </style>
+  <script src="site_libs/quarto-diagram/mermaid.min.js"></script>
+  <script src="site_libs/quarto-diagram/mermaid-init.js"></script>
+  <link href="site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -620,14 +623,14 @@ $math_old
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a></a><span class="co"># Nested-grouping example</span></span>
-<span id="cb16-2"><a></a>model_nest <span class="ot">&lt;-</span> <span class="fu">lmer</span>(math <span class="sc">~</span> cltype <span class="sc">+</span> math_old <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>system_id) <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>system_id<span class="sc">:</span>school_id), <span class="at">data =</span> star)</span>
+<span id="cb16-2"><a></a>model_nest <span class="ot">&lt;-</span> <span class="fu">lmer</span>(math <span class="sc">~</span> cltype <span class="sc">+</span> math_old <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>system_id<span class="sc">/</span>school_id), <span class="at">data =</span> star)</span>
 <span id="cb16-3"><a></a>random_nest <span class="ot">&lt;-</span> <span class="fu">explain_lmer</span>(model_nest, <span class="st">"random"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>There are 2 random terms you fit in the model:
 
-1 | system_id: Your model assumes there is across-group heterogeneity in the baseline level of math across system_id (random intercepts), allowing each group to have its own starting point that deviates from the overall average. 
+1 | school_id:system_id: This term captures a nested random effect structure where observations are grouped within 'school_id' nested within 'system_id'. Your model assumes there is across-group heterogeneity in the baseline level of math across this hierarchy, allowing each lower-level group to deviate from both the overall average and the average of its immediate higher-level group.
 
-1 | system_id:school_id: This term captures a nested random effect structure where observations are grouped within 'school_id' nested within 'system_id'. Your model assumes there is across-group heterogeneity in the baseline level of math across this hierarchy, allowing each lower-level group to deviate from both the overall average and the average of its immediate higher-level group.
+1 | system_id: Your model assumes there is across-group heterogeneity in the baseline level of math across system_id (random intercepts), allowing each group to have its own starting point that deviates from the overall average. 
 
 To explore variance contributions based on the model estimates, use: `attr(, 'var_details')`.</code></pre>
 </div>
@@ -659,8 +662,67 @@ $low_var
 </div>
 </div>
 </section>
-<section id="more-functions-to-be-added" class="slide level2">
-<h2>(More functions to be added …)</h2>
+<section id="lrt_lmermodel-target-type-data-..." class="slide level2">
+<h2><span style="font-size: 42px;"><code>lrt_lmer(model, target, type, data, ...)</code></span></h2>
+<p><br></p>
+<div style="border: 2px solid black; padding: 10px; background-color: #ececec; font-size: 30px">
+<p>✨ Hypothesis testing on a selected fixed or random effect in a fitted lmer model via likelihood ratio test. Currently only support models fitted with <code>lme4::lmer()</code> that contain fixed effects and a single random structure.</p>
+</div>
+<p><br></p>
+<div style="font-size: 35px">
+<ul>
+<li><p><span class="math inline">\(H_0\)</span>: The selected variable has no valid effect (i.e., its coefficient is 0 for fixed effects, or its variance component is 0 for random effects).</p></li>
+<li><p><span class="math inline">\(H_1\)</span>: The selected variable has an effect (i.e., not 0).</p></li>
+</ul>
+</div>
+</section>
+<section id="how-to-under-hlm" class="slide level2 smaller">
+<h2>How-to under HLM</h2>
+<div style="font-size: 26px; padding: 10px; margin: auto;">
+<ul>
+<li>Cannot ignore grouping: observations not independent across groups</li>
+<li>Control for all desired covariates properly</li>
+<li>Ensure hierarchical linear models (HLM) instead of <code>lm</code> OLS or ANOVA</li>
+</ul>
+</div>
+<div style="width: 100%; margin: auto; transform: scale(1.3); text-align: center;">
+<div class="cell" data-reveal="true" data-fig-width="12" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+  A[Macro Variables] --&gt; B[Within-Group Correlation]
+  B --&gt; A
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div style="font-size: 26px;">
+<ul>
+<li>Construct a reduced model based on the null hypothesis (by removing the target variable)</li>
+<li>Compare the full (<span class="math inline">\(M_1\)</span>) vs.&nbsp;reduced (<span class="math inline">\(M_0\)</span>) model fits</li>
+<li>Use the likelihood ratio test (LRT): <span class="math display">\[\lambda(\textbf{y}) = 2 \log \left( \frac{L_1}{L_0} \right) \sim \chi^2\]</span></li>
+</ul>
+</div>
+</div><div class="column" style="width:50%;">
+<div style="font-size: 24px; background-color: #f5f5f5; border-left: 4px solid #999; padding: 10px;">
+<p>✅ For each variable type (fixed or random), decide:</p>
+<ul>
+<li>the <strong>reduced model</strong> under <span class="math inline">\(H_0\)</span></li>
+<li>the appropriate <strong>null distribution</strong> for the test statistic <span class="math inline">\(\lambda(\textbf{y})\)</span></li>
+<li>reject <span class="math inline">\(H_0\)</span> if <span class="math inline">\(\lambda(\textbf{y})\)</span> is larger than the critical value</li>
+</ul>
+</div>
+</div></div>
+</section>
+<section id="fixed-1" class="slide level2">
+<h2>(fixed)</h2>
 </section></section>
 <section>
 <section id="future-work" class="title-slide slide level1 center">
@@ -670,12 +732,14 @@ $low_var
 <section id="tbd" class="slide level2">
 <h2>(TBD)</h2>
 </section>
-<section id="explore-lme4u" class="slide level2">
-<h2>Explore <code>lme4u</code></h2>
-<p>(Embed final vignettes / website)</p>
+<section id="section" class="slide level2">
+<h2></h2>
+<div style="text-align: center;">
+<iframe width="1800" height="680" src="https://hollyyfc.github.io/lme4u/" frameborder="0" style="background:white;"></iframe>
+</div>
 
 <div class="quarto-auto-generated-content">
-<p><img src="images/logo_hollyc.svg" class="slide-logo"></p>
+<p><img src="images/logo.png" class="slide-logo"></p>
 <div class="footer footer-default">
 <p>Duke University - Department of Statistical Science</p>
 </div>
