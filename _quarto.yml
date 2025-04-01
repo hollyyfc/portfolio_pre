@@ -4,6 +4,7 @@ project:
 
 format:
   revealjs:
+    html-math-method: mathjax
     theme: simple
     footer: "Duke University - Department of Statistical Science"
     logo: images/logo.png
