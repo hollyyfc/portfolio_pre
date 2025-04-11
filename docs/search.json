@@ -98,11 +98,18 @@
     "text": "Random Slope\n\n\nMathCode\n\n\n\\[\ny_{i,j} = \\mathbf{\\beta^\\intercal x_{i,j}} + \\mathbf{a_j^\\intercal z_{i,j}} + \\epsilon_{i,j}\n\\] If \\(\\mathbf{a_j} \\in \\mathbb{R}^p\\), then \\[\n\\text{Cov}[\\mathbf{a}_j] = \\Psi =\n\\begin{pmatrix}\n\\psi_1^2 & \\psi_{12} & \\cdots & \\psi_{1p} \\\\\n\\psi_{21} & \\psi_2^2 & \\cdots & \\psi_{2p} \\\\\n\\vdots & \\vdots & \\ddots & \\vdots \\\\\n\\psi_{p1} & \\psi_{p2} & \\cdots & \\psi_p^2\n\\end{pmatrix}\n\\] \\(M_1\\) (full model):  with \\(\\psi^2_p \\neq 0\\) and covariances \\(\\psi_{pk} \\neq 0\\)\n\\(M_0\\) (reduced model):  \\(\\psi^2_p=0\\) and covariances \\(\\psi_{pk}=0\\)\n(Asymptotic) Null distribution:  \\(\\lambda(\\mathbf{y})\\) has a mixture distribution under \\(M_0\\) (\\(d=p\\)) \\[\n\\lambda(\\mathbf{y}) =\n\\begin{cases}\nX_{p-1} \\sim \\chi^2_{p-1} & \\text{with probability } 1/2 \\\\\nX_p \\sim \\chi^2_p & \\text{with probability } 1/2\n\\end{cases}\n\\]\n\n\n\n\nrandom_slope &lt;- lrt_lmer(model, target = \"math_old\", type = \"random\", data = star)\n\nLikelihood Ratio Test for 'math_old' (random slope effect)\nFull Model: math ~ cltype + math_old + (math_old | school_id)\nReduced Model: math ~ cltype + math_old + (1 | school_id)\nTest Statistics:\n- Log-Likelihood Difference: 34.1071\n- Degrees of Freedom: 2 (Difference in estimated parameters)\n- P-Value: 2.223e-08 (Chi-square test)\nSince p = 2.223e-08, under alpha level of 0.05, we reject the null hypothesis. The test suggests that the random slope effect of math_old is statistically significant and contributes to the model.\n\n\n\n\n\n\nCalculating p-value under mixture null\n\n\nSimilar to the previous calculation of p-value, we have: \\[\n\\text{Pr}(\\lambda(\\mathbf{y}) \\geq \\lambda_{obs}) = \\frac{1}{2} \\left( \\text{Pr}(\\chi^2_{p-1} \\geq \\lambda_{obs}) + \\text{Pr}(\\chi^2_p \\geq \\lambda_{obs}) \\right)\n\\]\nIn R, we translate to:\n\n0.5 * ((1 - pchisq(lambda, p-1)) + (1 - pchisq(lambda, p)))"
   },
   {
-    "objectID": "index.html#assumption_check",
-    "href": "index.html#assumption_check",
+    "objectID": "index.html#res_model-...",
+    "href": "index.html#res_model-...",
     "title": "lme4u: An R Package",
-    "section": "assumption_check()",
-    "text": "assumption_check()\n(To be added …)"
+    "section": "res_(model, ...)",
+    "text": "res_(model, ...)\n\n\n✨ Provide diagnostic plots to check model assumptions at the within-group level for linear mixed-effects models fitted with lme4::lmer().\n\n\n\n\n\nWithin-Group Variation\n\nResiduals are independent\nResiduals have equal variance in each group (homoscedasticity)\nResiduals follow a roughly normal distribution\n\n\n\n\n\n\nBetween-Group Variation\n\nGroup-specific effects (e.g., intercepts or slopes) are independent\nGroup-specific effects follow a roughly normal distribution"
+  },
+  {
+    "objectID": "index.html#assumptions-check",
+    "href": "index.html#assumptions-check",
+    "title": "lme4u: An R Package",
+    "section": "Assumptions Check",
+    "text": "Assumptions Check\n\n\nNormalityRes vs. FitVariance\n\n\n\n\nres_norm(model)\n\n\n\n\n\n\n\n\n\n\n\n\n\nres_fit(model)\n\n\n\n\n\n\n\n\n\n\n\n\n\nres_box(model, group_var = \"school_id\")"
   },
   {
     "objectID": "index.html#section",

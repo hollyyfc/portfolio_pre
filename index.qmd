@@ -195,15 +195,15 @@ The "random" part is also capable of detecting uncorrelated random effects and m
 - Ensure hierarchical linear models (HLM) instead of `lm` OLS or ANOVA
 :::
 
-<div style="width: 100%; margin: auto; transform: scale(1.3); text-align: center;">
+<div style="text-align: center; transform: scale(1.3)">
+
 ```{mermaid}
-%%| fig-width: 12
 flowchart LR
   A[Macro Variables] --> B[Within-Group Correlation]
   B --> A
 ```
-</div>
 
+</div>
 
 ::: columns
 ::: {.column width="50%"}
@@ -417,11 +417,75 @@ In R, we translate to:
 
 
 
-## <span style="font-size: 55px;">`assumption_check()`</span>
+## <span style="font-size: 55px;">`res_(model, ...)`</span>
 
-(To be added ...)
+<br>
 
+::: {style="border: 2px solid black; padding: 10px; background-color: #ececec; font-size: 30px"}
+✨ Provide diagnostic plots to check model assumptions at the within-group level for linear mixed-effects models fitted with `lme4::lmer()`.
+:::
 
+:::columns
+
+::: {.column width="50%"}
+::: {style="font-size: 26px; padding: 50px; border-right: 2px solid #ddd; padding-right: 20px;"}
+::: {.fragment .grow fragment-index=1}
+**Within-Group Variation**
+
+- Residuals are independent
+- Residuals have equal variance in each group (homoscedasticity)
+- Residuals follow a roughly normal distribution
+:::
+:::
+:::
+
+::: {.column width="50%"}
+::: {.fragment .semi-fade-out .shrink fragment-index=1}
+::: {style="font-size: 26px; padding: 50px;"}
+**Between-Group Variation**
+
+- Group-specific effects (e.g., intercepts or slopes) are independent
+- Group-specific effects follow a roughly normal distribution
+:::
+:::
+:::
+
+:::
+
+## <span style="font-size: 45px;">Assumptions Check</span>
+
+<div style="font-size: 20px;">
+::: panel-tabset
+
+## Normality
+
+<div style="font-size: 35px;">
+
+```{r, echo=TRUE}
+res_norm(model)
+```
+</div>
+
+## Res vs. Fit
+
+<div style="font-size: 35px;">
+
+```{r, echo=TRUE}
+res_fit(model)
+```
+</div>
+
+## Variance
+
+<div style="font-size: 35px;">
+
+```{r, echo=TRUE}
+res_box(model, group_var = "school_id")
+```
+</div>
+
+:::
+</div>
 
 
 # Future Work
