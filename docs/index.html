@@ -474,17 +474,17 @@ $ math      &lt;int&gt; 593, 639, 583, 618, 684, 648, 589, 631, 606, 667, 596, 6
 <h2>Question we ask …</h2>
 <div style="font-size: 70%;">
 <blockquote>
-<p><em>Does prior math performance impact students’ current math scores (controlling for class type), and how does this effect vary across schools?</em></p>
+<p><em>To what extent is students’ current math performance associated with their prior math scores (controlling for class type), and does this association vary across schools?</em></p>
 </blockquote>
 </div>
 <p><span class="math display">\[
 \scriptsize \text{MathScore}_{ij} = \beta_0 + \beta_1(\text{ClassType}_{ij}) + \beta_2(\text{MathOld}_{ij}) + a_{0j} + a_{1j}(\text{MathOld}_{ij}) + \epsilon_{ij}
 \]</span></p>
 <ul>
-<li><span class="math inline">\(\tiny i \text{ indexes students},\ j \text{ indexes schools.}\)</span></li>
-<li><span class="math inline">\(\tiny \beta_0, \beta_1, \beta_2 \text{ are fixed intercept and slopes.}\)</span></li>
-<li><span class="math inline">\(\tiny \mathbf{a}_j = \left(a_{0j}, a_{1j} \right) \sim N(\mathbf{0,\Psi}) \text{ is a vector of random intercept for school and random slope for MathOld.}\)</span></li>
-<li><span class="math inline">\(\tiny \epsilon_{ij} \sim N(0, \sigma^2) \text{ is the residual (within-school heterogeneity).}\)</span></li>
+<li><span class="math inline">\(\scriptsize i \text{ indexes students},\ j \text{ indexes schools.}\)</span></li>
+<li><span class="math inline">\(\scriptsize \beta_0, \beta_1, \beta_2 \text{ are fixed intercept and slopes.}\)</span></li>
+<li><span class="math inline">\(\scriptsize \mathbf{a}_j = \left(a_{0j}, a_{1j} \right) \sim N(\mathbf{0,\Psi}) \text{ is a vector of random intercept and slope.}\)</span></li>
+<li><span class="math inline">\(\scriptsize \epsilon_{ij} \sim N(0, \sigma^2) \text{ is the residual (within-school heterogeneity).}\)</span></li>
 </ul>
 </section>
 <section id="modeling" class="slide level2">
@@ -668,10 +668,10 @@ $low_var
 <p>✨ Hypothesis testing on a selected fixed or random effect in a fitted lmer model via likelihood ratio test. Currently only support models fitted with <code>lme4::lmer()</code> that contain fixed effects and a single random structure.</p>
 </div>
 <p><br></p>
-<div style="font-size: 35px">
+<div style="font-size: 32px">
 <ul>
-<li><p><span class="math inline">\(H_0\)</span>: The selected variable has no valid effect (i.e., its coefficient is 0 for fixed effects, or its variance component is 0 for random effects).</p></li>
-<li><p><span class="math inline">\(H_1\)</span>: The selected variable has an effect (i.e., not 0).</p></li>
+<li><p><span class="math inline">\(H_0\)</span>: The selected variable has no association (i.e., its coefficient is 0 for fixed effect, or excluding it is sufficient for random effect).</p></li>
+<li><p><span class="math inline">\(H_1\)</span>: The selected variable has an association (i.e., its coefficient is nonzero for fixed effect, or including it explains additional variability for random effect).</p></li>
 </ul>
 </div>
 </section>

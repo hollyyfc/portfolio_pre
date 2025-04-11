@@ -60,7 +60,7 @@ glimpse(star)
 ## Question we ask ...
 
 ::: {style="font-size: 70%;"}
-> _Does prior math performance impact students' current math scores (controlling for class type), and how does this effect vary across schools?_
+> _To what extent is students’ current math performance associated with their prior math scores (controlling for class type), and does this association vary across schools?_
 
 :::
 
@@ -68,10 +68,10 @@ $$
 \scriptsize \text{MathScore}_{ij} = \beta_0 + \beta_1(\text{ClassType}_{ij}) + \beta_2(\text{MathOld}_{ij}) + a_{0j} + a_{1j}(\text{MathOld}_{ij}) + \epsilon_{ij}
 $$
 
-- $\tiny i \text{ indexes students},\ j \text{ indexes schools.}$
-- $\tiny \beta_0, \beta_1, \beta_2 \text{ are fixed intercept and slopes.}$
-- $\tiny \mathbf{a}_j = \left(a_{0j}, a_{1j} \right) \sim N(\mathbf{0,\Psi}) \text{ is a vector of random intercept for school and random slope for MathOld.}$
-- $\tiny \epsilon_{ij} \sim N(0, \sigma^2) \text{ is the residual (within-school heterogeneity).}$
+- $\scriptsize i \text{ indexes students},\ j \text{ indexes schools.}$
+- $\scriptsize \beta_0, \beta_1, \beta_2 \text{ are fixed intercept and slopes.}$
+- $\scriptsize \mathbf{a}_j = \left(a_{0j}, a_{1j} \right) \sim N(\mathbf{0,\Psi}) \text{ is a vector of random intercept and slope.}$
+- $\scriptsize \epsilon_{ij} \sim N(0, \sigma^2) \text{ is the residual (within-school heterogeneity).}$
 
 ## Modeling
 
@@ -180,10 +180,10 @@ The "random" part is also capable of detecting uncorrelated random effects and m
 
 <br>
 
-::: {style="font-size: 35px"}
-- $H_0$: The selected variable has no valid effect (i.e., its coefficient is 0 for fixed effects, or its variance component is 0 for random effects).
+::: {style="font-size: 32px"}
+- $H_0$: The selected variable has no association (i.e., its coefficient is 0 for fixed effect, or excluding it is sufficient for random effect).
 
-- $H_1$: The selected variable has an effect (i.e., not 0).
+- $H_1$: The selected variable has an association (i.e., its coefficient is nonzero for fixed effect, or including it explains additional variability for random effect).
 :::
 
 ## How-to under HLM {.smaller}

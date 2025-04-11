@@ -25,7 +25,7 @@
     "href": "index.html#question-we-ask",
     "title": "lme4u: An R Package",
     "section": "Question we ask …",
-    "text": "Question we ask …\n\n\nDoes prior math performance impact students’ current math scores (controlling for class type), and how does this effect vary across schools?\n\n\n\\[\n\\scriptsize \\text{MathScore}_{ij} = \\beta_0 + \\beta_1(\\text{ClassType}_{ij}) + \\beta_2(\\text{MathOld}_{ij}) + a_{0j} + a_{1j}(\\text{MathOld}_{ij}) + \\epsilon_{ij}\n\\]\n\n\\(\\tiny i \\text{ indexes students},\\ j \\text{ indexes schools.}\\)\n\\(\\tiny \\beta_0, \\beta_1, \\beta_2 \\text{ are fixed intercept and slopes.}\\)\n\\(\\tiny \\mathbf{a}_j = \\left(a_{0j}, a_{1j} \\right) \\sim N(\\mathbf{0,\\Psi}) \\text{ is a vector of random intercept for school and random slope for MathOld.}\\)\n\\(\\tiny \\epsilon_{ij} \\sim N(0, \\sigma^2) \\text{ is the residual (within-school heterogeneity).}\\)"
+    "text": "Question we ask …\n\n\nTo what extent is students’ current math performance associated with their prior math scores (controlling for class type), and does this association vary across schools?\n\n\n\\[\n\\scriptsize \\text{MathScore}_{ij} = \\beta_0 + \\beta_1(\\text{ClassType}_{ij}) + \\beta_2(\\text{MathOld}_{ij}) + a_{0j} + a_{1j}(\\text{MathOld}_{ij}) + \\epsilon_{ij}\n\\]\n\n\\(\\scriptsize i \\text{ indexes students},\\ j \\text{ indexes schools.}\\)\n\\(\\scriptsize \\beta_0, \\beta_1, \\beta_2 \\text{ are fixed intercept and slopes.}\\)\n\\(\\scriptsize \\mathbf{a}_j = \\left(a_{0j}, a_{1j} \\right) \\sim N(\\mathbf{0,\\Psi}) \\text{ is a vector of random intercept and slope.}\\)\n\\(\\scriptsize \\epsilon_{ij} \\sim N(0, \\sigma^2) \\text{ is the residual (within-school heterogeneity).}\\)"
   },
   {
     "objectID": "index.html#modeling",
@@ -67,7 +67,7 @@
     "href": "index.html#lrt_lmermodel-target-type-data-...",
     "title": "lme4u: An R Package",
     "section": "lrt_lmer(model, target, type, data, ...)",
-    "text": "lrt_lmer(model, target, type, data, ...)\n\n\n✨ Hypothesis testing on a selected fixed or random effect in a fitted lmer model via likelihood ratio test. Currently only support models fitted with lme4::lmer() that contain fixed effects and a single random structure.\n\n\n\n\n\\(H_0\\): The selected variable has no valid effect (i.e., its coefficient is 0 for fixed effects, or its variance component is 0 for random effects).\n\\(H_1\\): The selected variable has an effect (i.e., not 0)."
+    "text": "lrt_lmer(model, target, type, data, ...)\n\n\n✨ Hypothesis testing on a selected fixed or random effect in a fitted lmer model via likelihood ratio test. Currently only support models fitted with lme4::lmer() that contain fixed effects and a single random structure.\n\n\n\n\n\\(H_0\\): The selected variable has no association (i.e., its coefficient is 0 for fixed effect, or excluding it is sufficient for random effect).\n\\(H_1\\): The selected variable has an association (i.e., its coefficient is nonzero for fixed effect, or including it explains additional variability for random effect)."
   },
   {
     "objectID": "index.html#how-to-under-hlm",
