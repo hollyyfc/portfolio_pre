@@ -477,9 +477,14 @@ $ math      &lt;int&gt; 593, 639, 583, 618, 684, 648, 589, 631, 606, 667, 596, 6
 <p><em>To what extent is students’ current math performance associated with their prior math scores (controlling for class type), and does this association vary across schools?</em></p>
 </blockquote>
 </div>
+<div style="font-size: 80%;">
 <p><span class="math display">\[
-\scriptsize \text{MathScore}_{ij} = \beta_0 + \beta_1(\text{ClassType}_{ij}) + \beta_2(\text{MathOld}_{ij}) + a_{0j} + a_{1j}(\text{MathOld}_{ij}) + \epsilon_{ij}
+\begin{aligned}
+\text{MathScore}_{ij} = &amp;\beta_0 + \beta_1(\text{ClassType}_{ij}) + \beta_2(\text{MathOld}_{ij}) + \\
+&amp;a_{0j} + a_{1j}(\text{MathOld}_{ij}) + \epsilon_{ij}
+\end{aligned}
 \]</span></p>
+</div>
 <ul>
 <li><span class="math inline">\(\scriptsize i \text{ indexes students},\ j \text{ indexes schools.}\)</span></li>
 <li><span class="math inline">\(\scriptsize \beta_0, \beta_1, \beta_2 \text{ are fixed intercept and slopes.}\)</span></li>

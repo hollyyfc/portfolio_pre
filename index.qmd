@@ -64,9 +64,14 @@ glimpse(star)
 
 :::
 
+<div style="font-size: 80%;">
 $$
-\scriptsize \text{MathScore}_{ij} = \beta_0 + \beta_1(\text{ClassType}_{ij}) + \beta_2(\text{MathOld}_{ij}) + a_{0j} + a_{1j}(\text{MathOld}_{ij}) + \epsilon_{ij}
+\begin{aligned}
+\text{MathScore}_{ij} = &\beta_0 + \beta_1(\text{ClassType}_{ij}) + \beta_2(\text{MathOld}_{ij}) + \\ 
+&a_{0j} + a_{1j}(\text{MathOld}_{ij}) + \epsilon_{ij}
+\end{aligned}
 $$
+</div>
 
 - $\scriptsize i \text{ indexes students},\ j \text{ indexes schools.}$
 - $\scriptsize \beta_0, \beta_1, \beta_2 \text{ are fixed intercept and slopes.}$
