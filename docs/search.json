@@ -117,5 +117,12 @@
     "title": "lme4u: An R Package",
     "section": "",
     "text": "👩‍💻 Under Development\n\n\nAuto-detect variable transformations (factor(), log(), sqrt(), etc) in input models\nAccommodate more complex or edge-case input models from more advanced users\nCreate a generalized model selection function with BIC and suitable metrics for mixed-effect models\nDebug from submitted issues and prepare for CRAN submission\n\n\n\n💡 And More …\n\n\nDesign an uncertainty quantification function, which includes a suite of appropriate intervals (constant coverage, Bayesian, etc), for both fixed and random effects in lmer models\nExtend existing functionality to glmer and nlme model objects\nIncorporate S3/S4 objects or C++ code for faster computation"
+  },
+  {
+    "objectID": "index.html#special-thanks",
+    "href": "index.html#special-thanks",
+    "title": "lme4u: An R Package",
+    "section": "Special Thanks",
+    "text": "Special Thanks\n\n\n\n\n\nProf. Mine Çetinkaya-Rundel and Prof. Colin Rundel\n\n\nProf. Peter Hoff\n\n\nProf. Yue Jiang\n\n\nMegan Kelly Deyncourt and Dr. Dawn Strickland"
   }
 ]

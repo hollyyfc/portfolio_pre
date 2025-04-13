@@ -524,6 +524,32 @@ res_box(model, group_var = "school_id")
 
 :::
 
+## Special Thanks
+
+<br>
+
+::: columns
+
+::: {.column width="36%"}
+<ul style="font-size: 27px;">
+  <li>Prof. Mine Çetinkaya-Rundel and Prof. Colin Rundel</li>
+  <li>Prof. Peter Hoff</li>
+  <li>Prof. Yue Jiang</li>
+  <li>Megan Kelly Deyncourt and Dr. Dawn Strickland</li>
+</ul>
+:::
+
+::: {.column width="32%"}
+<img src="images/book.png" alt="R Packages 2e" style="height: 400px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); border-radius: 4px;">
+:::
+
+::: {.column width="32%"}
+<img src="images/sheet.png" alt="R Package Development Cheatsheet" style="height: 400px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); border-radius: 4px;">
+:::
+
+:::
+
+
 ## 
 
 ::: {style="text-align: center;"}
